@@ -1,3 +1,0 @@
-//test
-//vu kto takue
-
