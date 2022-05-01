@@ -2,11 +2,37 @@
 //
 
 #include <iostream>
+#include<fstream>
+#include<string>
+//#include"menu.h"
+//#include"user.h"
+
+namespace amilib
+{
+    void login()
+    {
+        std::ifstream log_file;
+        std::string partition = "";
+        std::string account_type = "";
+        std::string login = "";
+        std::string password = "";
+
+        log_file.open("..\\Test\\BusinessData\\booksInfo.txt");
+        while (!log_file.eof())
+        {
+            log_file >> partition;
+        }
+        std::cout << partition << std::endl;
+    }
+}
 
 int main()
 {
     std::cout << "Hello World!\nishandry is here!";
     std::cout << std::endl;
+
+    amilib::login();
+
     system("pause");
 }
 

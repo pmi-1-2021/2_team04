@@ -1,6 +1,6 @@
 #pragma once
 
-namespace amiliv
+namespace amilib
 {
 	class IMenu
 	{

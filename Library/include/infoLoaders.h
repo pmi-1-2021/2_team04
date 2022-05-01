@@ -27,7 +27,7 @@ namespace amilib
 
 	class UserMapLoader : public MapLoader
 	{
-		std::map<std::string, User> users;
+		//std::map<std::string, User> users;
 		std::string path;
 	public:
 		void pull();
