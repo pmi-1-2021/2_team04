@@ -17,7 +17,8 @@ namespace amilib
         std::string login = "";
         std::string password = "";
 
-        log_file.open("..\\Test\\BusinessData\\booksInfo.txt");
+        log_file.open("..\\BusinessData\\booksInfo.txt");
+        std::cout << log_file.is_open() << std::endl;
         while (!log_file.eof())
         {
             log_file >> partition;
