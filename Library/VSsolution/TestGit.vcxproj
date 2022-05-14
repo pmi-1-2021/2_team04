@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -139,17 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\Library.cpp" />
-    <ClCompile Include="..\include\user.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\book.h" />
-    <ClInclude Include="..\include\infoLoaders.h" />
-    <ClInclude Include="..\include\menu.h" />
-    <ClInclude Include="..\include\user.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="..\BusinessData\booksInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\book.h" />
+    <ClInclude Include="..\source\infoLoaders.h" />
+    <ClInclude Include="..\source\menu.h" />
+    <ClInclude Include="..\source\user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\Library.cpp" />
+    <ClCompile Include="..\source\startmenu.cpp" />
+    <ClCompile Include="..\source\user.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

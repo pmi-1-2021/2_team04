@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\Library.cpp">
+    <ClCompile Include="..\source\Library.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\include\user.cpp">
+    <ClCompile Include="..\source\user.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\book.h">
+    <ClInclude Include="..\source\book.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\infoLoaders.h">
+    <ClInclude Include="..\source\infoLoaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\menu.h">
+    <ClInclude Include="..\source\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\user.h">
+    <ClInclude Include="..\source\user.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

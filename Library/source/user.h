@@ -9,11 +9,11 @@ namespace amilib
 {
     class Account
     {
-    private:
-        std::string login;
-        std::string password;
-        std::map<std::string, std::set<Book>> user_books;
     public:
+        std::string m_modifier;
+        std::string m_login;
+        std::string m_password;
+        std::vector<std::unordered_map<std::string, Book>::iterator> m_books_itervec;
         std::string GetLogin();
         std::string GetPassword();
         void SetLogin(std::string login);

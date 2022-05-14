@@ -4,21 +4,21 @@ namespace amilib
 {
     std::string Account::GetLogin()
     {
-        return login;
+        return m_login;
     }
     std::string Account::GetPassword()
     {
-        return password;
+        return m_password;
     }
 
     void Account::SetLogin(std::string login)
     {
-        this->login = login;
+        this->m_login = login;
     }
 
     void Account::SetPassword(std::string password)
     {
-        this->password = password;
+        this->m_password = password;
     }
 
 }

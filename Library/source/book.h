@@ -8,12 +8,17 @@ namespace amilib
 	class Book
 	{
 		bool m_available;
-		std::string m_name;
+		std::string m_title;
 		std::string m_author;
+		size_t m_size;
 		std::string m_userOwner;
 		std::string m_filePath;
 	public:
-		Book(bool _is_available, std::string _name, std::string _author, std::string _user_owner, std::string _filePath);
+		Book(bool _is_available, std::string _name, std::string _author, size_t _size, std::string _user_owner, std::string _filePath);
+		bool get_availability();
+		size_t get_size();
+		std::string get_title();
+		std::string get_author();
 		void set_availability(bool _is_available);
 		void set_owner(std::string _user_owner);
 		std::string get_path();
@@ -24,10 +29,8 @@ namespace amilib
 	class IReader
 	{
 	protected:
-		std::string m_filePath;
-		std::vector<std::string> m_lines;
 	public:
-		IReader(std::string _file_path);
+		IReader(std::string _file_path); //initialize m_lines with the lines of file
 		virtual ~IReader();
 		virtual void pull_book() = 0;
 		virtual void print_book() = 0;
@@ -47,6 +50,8 @@ namespace amilib
 
 	class BookText : public IEditor
 	{
+		std::string m_filePath;
+		std::vector<std::string> m_lines;
 	public:
 		BookText(std::string _file_path);
 		virtual ~BookText();
