@@ -1,1 +1,3 @@
-strrrr
+0 0 library library 0 library.txt
+1 10 title1 author1 100 book1.txt
+2 10 title2 author2 120 book2.txt

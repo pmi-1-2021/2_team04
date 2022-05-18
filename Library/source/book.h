@@ -1,69 +1,75 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <fstream>
+
+#include <string>
+
+
 
 namespace amilib
 {
 	class Book
 	{
-		bool m_available;
-		std::string m_title;
-		std::string m_author;
-		size_t m_size;
-		std::string m_userOwner;
-		std::string m_filePath;
+	private:
+		int id;
+		size_t ammount;
+		std::string title;
+		std::string author;
+		size_t size;
+		std::string fileName;
 	public:
-		Book(bool _is_available, std::string _name, std::string _author, size_t _size, std::string _user_owner, std::string _filePath);
-		bool get_availability();
-		size_t get_size();
-		std::string get_title();
-		std::string get_author();
-		void set_availability(bool _is_available);
-		void set_owner(std::string _user_owner);
-		std::string get_path();
-		friend std::istream& operator>>(std::istream& in, Book& book);
-		friend std::ostream& operator<<(std::ostream& out, Book& book);
+		Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
+		int getId();
+		size_t getAmmount();
+		size_t getSize();
+		std::string getTitle();
+		std::string getAuthor();
+		std::string getFileName();
+		void setAmmount(size_t new_ammount);
 	};
 
-	class IReader
-	{
-	protected:
-	public:
-		IReader(std::string _file_path); //initialize m_lines with the lines of file
-		virtual ~IReader();
-		virtual void pull_book() = 0;
-		virtual void print_book() = 0;
-	};
 
-	class IEditor : public IReader
-	{
-	public:
-		virtual ~IEditor();
-		virtual void print_lines() = 0;
-		virtual void add_line() = 0;
-		virtual void delete_line() = 0;
-		virtual void edit_line(size_t _line_number) = 0;
-		virtual void delete_content() = 0;
-		virtual void save() = 0;
-	};
+	//todo :
+	//solution for reading the book and editing lines of the book for admin role only
+	//functions, constructors and methods should be called in amilib::menu::selectBook() 
 
-	class BookText : public IEditor
-	{
-		std::string m_filePath;
-		std::vector<std::string> m_lines;
-	public:
-		BookText(std::string _file_path);
-		virtual ~BookText();
-		void pull_book();
-		void print_book();
-		void print_lines();
-		void add_line();
-		void delete_line();
-		void edit_line(size_t _line_number);
-		void delete_content();
-		void save();
-	};
+
+	//class IReader
+	//{
+	//protected:
+	//public:
+	//	IReader(std::string _file_path); //initialize m_lines with the lines of file
+	//	virtual ~IReader();
+	//	virtual void pull_book() = 0;
+	//	virtual void print_book() = 0;
+	//};
+
+	//class IEditor : public IReader
+	//{
+	//public:
+	//	virtual ~IEditor();
+	//	virtual void print_lines() = 0;
+	//	virtual void add_line() = 0;
+	//	virtual void delete_line() = 0;
+	//	virtual void edit_line(size_t _line_number) = 0;
+	//	virtual void delete_content() = 0;
+	//	virtual void save() = 0;
+	//};
+
+	//class BookText : public IEditor
+	//{
+	//	std::string m_filePath;
+	//	std::vector<std::string> m_lines;
+	//public:
+	//	BookText(std::string _file_path);
+	//	virtual ~BookText();
+	//	void pull_book();
+	//	void print_book();
+	//	void print_lines();
+	//	void add_line();
+	//	void delete_line();
+	//	void edit_line(size_t _line_number);
+	//	void delete_content();
+	//	void save();
+	//};
 
 
 }
