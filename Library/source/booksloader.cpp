@@ -35,4 +35,5 @@ void amilib::BooksLoader::pull()
 
 		this->books_map.emplace(std::make_pair(id, Book(id, ammount, title, author, size, fileName)));
 	}
+	file.close();
 }

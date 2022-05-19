@@ -21,7 +21,7 @@ namespace amilib
 		void loadAccInfo();
 		void clearInfo();
 	private:
-		void logIn();
+		bool logIn();
 		void logOut();
 		void signUp();
 		void noaccMain();
@@ -37,6 +37,9 @@ namespace amilib
 		void updateBooks();
 		void takeBook(int id);
 		void returnBook(int id);
+		bool uniqueNewUsername(std::string name);
+		int idAtUsername(std::string name);
+		bool askPassword(Account& a);
 		Account account;
 		BooksLoader books;
 		UsersLoader users;

@@ -45,7 +45,7 @@ namespace amilib
 		//todo
 		//void push();
 		//void addItem();
-		//void deleteItem();
+		//void deleteIte);m(
 		//
 	};
 }

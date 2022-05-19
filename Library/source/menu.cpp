@@ -82,73 +82,60 @@ void amilib::Menu::clearInfo()
 	system("pause");
 }
 
-void amilib::Menu::logIn()
+bool amilib::Menu::logIn()
 {
 	system("CLS");
 	drawHeader();
-    bool return_back = false;
-	bool success = false;
-	while (!return_back && !success)
+	bool loggedIn = false;
+	while (!loggedIn)
 	{
 		std::cout << "Enter [x] to return back\n\n";
 		std::cout << "Enter your username > ";
-		std::string user_login;
-		std::cin >> user_login;
-		if (user_login == "x")
+		std::string entered_username;
+		std::cin >> entered_username;
+		if (entered_username == "x")
 		{
 			break;
 		}
-		for (std::pair<int, Account> p : this->users.users_map)
+		int id = idAtUsername(entered_username);
+		if (id == 0)
 		{
-			if (user_login == p.second.getLogin())
-			{
-				std::cout << "Hi," << user_login << "!,\nEnter your password > ";
-				std::string user_password;
-				std::cin >> user_password;
-				while (user_password != p.second.getPassword())
-				{
-					std::cout << "! Not correct password !\nEnter [r] to try again\n[x] to return back\n> ";
-					char ch;
-					std::cin >> ch;
-					if (ch == 'x')
-					{
-						return_back = true;
-						break;
-					}
-					else
-					{
-						std::cout << "Enter your password > ";
-						std::cin >> user_password;
-					}
-				}
-				if (return_back)
-				{
-					break;
-				}
-				else
-				{
-					this->account.setId(p.second.getId());
-					this->account.setRole(p.second.getRole());
-					this->account.setLogin(p.second.getLogin());
-					this->account.setPassword(p.second.getPassword());
-					loadAccInfo();
-					success = true;
-					std::cout << "\nLogged in!\n";
-					break;
-				}
-			}
-		}
-		if (!return_back && !success)
-		{
-			std::cout << "Incorrect username! User with this login does not exist.\nYou need to register. If you want to, enter [y]\n";
+			std::cout << "Incorrect username!\nEnter [r] to try again\n[x] to return back\n >";
 			char ch;
 			std::cin >> ch;
-			if (ch == 'y')
+			if (ch == 'r')
 			{
-				signUp();
+				continue;
+			}
+			else if (ch == 'x')
+			{
+				break;
+			}
+		}
+		else
+		{
+			Account& a = this->users.users_map.at(id);
+			loggedIn = askPassword(a);
+			if (loggedIn)
+			{
+				this->account.setId(a.getId());
+				this->account.setRole(a.getRole());
+				this->account.setLogin(a.getLogin());
+				this->account.setPassword(a.getPassword());
+				loadAccInfo();
+				system("CLS");
+				std::cout << "\nLogged in!\n Press enter to continue\n > ";
+				std::cin.ignore();
+				std::cin.ignore();
+			}
+			else
+			{
+				break;
 			}
 		}
 	}
+
+	return loggedIn;
 }
 
 void amilib::Menu::logOut()
@@ -158,7 +145,57 @@ void amilib::Menu::logOut()
 
 void amilib::Menu::signUp()
 {
-	std::cout << "not implemented" << std::endl;
+	system("CLS");
+	std::string new_role;
+	if (this->account.getRole() == "admin")
+	{
+		std::cout << "Add a new admin:\n";
+		new_role = "admin";
+	}
+	else
+	{
+		new_role = "user";
+	}
+	bool go_back = false;
+	bool unique = true;
+	std::string new_username;
+	do
+	{
+		unique = true;
+		std::cout << "\nRegistration:\nEnter username:\n > ";
+		std::cin >> new_username;
+		unique = uniqueNewUsername(new_username);
+		if (!unique)
+		{
+			std::cout << "\nThis username is unavailable\n[x] to go back\n[r] to try another username\n > ";
+			char ch;
+			std::cin >> ch;
+			if (ch == 'x')
+			{
+				go_back = true;
+				break;
+			}
+			else if (ch == 'r')
+			{
+				system("CLS");
+			}
+		}
+	} while (!unique);
+	if (go_back)
+	{
+		return;
+	}
+	std::unordered_map<int, Account>::iterator it = --this->users.users_map.end();
+	int new_id = (int)(it->first) + 1;
+	std::cout << "\nEnter new password:\n > ";
+	std::string new_password;
+	std::cin >> new_password;
+	std::fstream file("..\\BusinessData\\users.txt", std::ios::out | std::ios::app);
+	file << "\n" << new_id << ' ' << new_role << ' ' << new_username << ' ' << new_password;
+	file.close();
+	std::cout << "Account is successfully created!\n Press enter to go back\n > ";
+	std::cin.ignore();
+	std::cin.ignore();
 }
 
 void amilib::Menu::noaccMain()
@@ -179,8 +216,10 @@ void amilib::Menu::noaccMain()
 		}
 		else if (ch == 'i')
 		{
-			logIn();
-			break;
+			if (logIn())
+			{
+				break;
+			}
 		}
 		else if (ch == 'u')
 		{
@@ -225,7 +264,7 @@ void amilib::Menu::adminMain()
 		system("CLS");
 		drawHeader();
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
-		std::cout << "[l] library book list\n[m] my list\n[o] log out\n[c] close program\n";
+		std::cout << "[l] library book list\n[m] my list\n[n] add new admin\n[o] log out\n[c] close program\n";
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
 		std::cout << "\n > ";
 		std::cin >> ch;
@@ -236,6 +275,10 @@ void amilib::Menu::adminMain()
 		else if (ch == 'm')
 		{
 			userBookList();
+		}
+		else if (ch == 'n')
+		{
+			signUp();
 		}
 		else if (ch == 'o')
 		{
@@ -395,6 +438,13 @@ void amilib::Menu::updateBooks()
 void amilib::Menu::takeBook(int book_id)
 {
 	//? update?
+	if (this->account.getRole() == "unknown")
+	{
+		std::cout << "Please, log in or create an account to take this book\n Press enter to continue\n > ";
+		std::cin.ignore();
+		std::cin.ignore();
+		return;
+	}
 	size_t ammount = this->books.books_map.at(book_id).getAmmount();
 	if (ammount == 0)
 	{
@@ -437,4 +487,57 @@ void amilib::Menu::returnBook(int book_id)
 	}
 	file.close();
 	std::cout << "Book is returned\n";
+}
+
+bool amilib::Menu::uniqueNewUsername(std::string name)
+{
+	bool unique = true;
+	for (std::unordered_map<int, Account>::iterator it = users.users_map.begin();
+		it != users.users_map.end(); it ++)
+	{
+		if (it->second.getLogin() == name)
+		{
+			unique = false;
+		}
+	}
+	return unique;
+}
+
+int amilib::Menu::idAtUsername(std::string name)
+{
+	std::unordered_map<int, Account>::iterator it = users.users_map.begin();
+	for ( ; it != users.users_map.end(); it++)
+	{
+		if (it->second.getLogin() == name)
+		{
+			return it->second.getId();
+		}
+	}
+	if (it == users.users_map.end())
+	{
+		return 0;
+	}
+}
+
+bool amilib::Menu::askPassword(Account& a)
+{
+	std::cout << "Hi," << a.getLogin() << "!\nEnter your password > ";
+	std::string entered_password;
+	std::cin >> entered_password;
+	while (entered_password != a.getPassword())
+	{
+		std::cout << "! Not correct password !\nEnter [r] to try again\n[x] to return back\n > ";
+		char ch;
+		std::cin >> ch;
+		if (ch == 'x')
+		{
+			return false;
+		}
+		else
+		{
+			std::cout << "Enter your password > ";
+			std::cin >> entered_password;
+		}
+	}
+	return true;
 }
