@@ -138,6 +138,16 @@ void amilib::Menu::logIn()
 				}
 			}
 		}
+		if (!return_back && !success)
+		{
+			std::cout << "Incorrect username! User with this login does not exist.\nYou need to register. If you want to, enter [y]\n";
+			char ch;
+			std::cin >> ch;
+			if (ch == 'y')
+			{
+				signUp();
+			}
+		}
 	}
 }
 
