@@ -59,7 +59,10 @@ void amilib::Menu::loadAccInfo()
 		file >> bookId;
 		bool returned;
 		file >> returned;
-
+		if (userId == 0)
+		{
+			continue;
+		}
 		if (this->account.getId() == userId && !returned)
 		{
 			this->account.addBook(this->books.books_map.find(bookId)->first);
@@ -394,6 +397,7 @@ void amilib::Menu::takeBook(int book_id)
 	this->account.addBook(book_id);
 	std::fstream file("..\\BusinessData\\transactions.txt", std::ios::app);
 	file << "\n" << this->account.getId() << ' ' << book_id << ' ' << 0;
+	file << "\n" << 0 << ' ' << 0 << ' ' << 0;
 	file.close();
 	//? update?
 	std::cout << "Book is taken\n";
