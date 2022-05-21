@@ -6,7 +6,7 @@
 
 amilib::BooksLoader::BooksLoader()
 {
-	pull();
+
 }
 
 amilib::BooksLoader::~BooksLoader()
@@ -15,7 +15,7 @@ amilib::BooksLoader::~BooksLoader()
 }
 
 
-void amilib::BooksLoader::pull()
+void amilib::BooksLoader::pull(std::unordered_map<int , Book>& books_map)
 {
 	std::ifstream file("..\\BusinessData\\booksInfo.txt");
 	while (!file.eof())
@@ -33,7 +33,27 @@ void amilib::BooksLoader::pull()
 		std::string fileName;
 		file >> fileName;
 
-		this->books_map.emplace(std::make_pair(id, Book(id, ammount, title, author, size, fileName)));
+		books_map.emplace(std::make_pair(id, Book(id, ammount, title, author, size, fileName)));
 	}
+	file.close();
+}
+
+void amilib::BooksLoader::addItem(Book b)
+{
+	std::string os = "";
+	size_t i = 1000;
+	for ( ; i > 9; i = i / 10)
+	{
+		if (b.getAmmount() % i == b.getAmmount())
+		{
+			os += "0";
+		}
+		else
+		{
+			break;
+		}
+	}
+	std::fstream file("..\\BusinessData\\booksInfo.txt", std::ios::out | std::ios::app);
+	file << b.getId() << ' ' << os << b.getAmmount() << ' ' << b.getTitle() << ' ' << b.getAuthor() << ' ' << b.getSize() << ' ' << b.getFileName() << "\n";
 	file.close();
 }

@@ -4,10 +4,10 @@
 
 namespace amilib
 {
-    Account::Account(int _id, std::string _role, std::string _login, std::string _password)
+    Account::Account(int _id, std::string _role, std::string _username, std::string _password)
         : id(_id),
         role(_role),
-        login(_login),
+        username(_username),
         password(_password)
     {
         acc_books.resize(0);
@@ -18,7 +18,7 @@ namespace amilib
     Account::Account()
         : id(-1),
         role("unknown"),
-        login("Log in to start reading with Amilib\nIf you dont have an account, create it now!"),
+        username("Log in to start reading with Amilib\nIf you dont have an account, create it now!"),
         password("-")
     {
         acc_books.resize(0);
@@ -31,9 +31,9 @@ namespace amilib
     {
         return role;
     }
-    std::string Account::getLogin()
+    std::string Account::getUsername()
     {
-        return login;
+        return username;
     }
     std::string Account::getPassword()
     {
@@ -50,9 +50,9 @@ namespace amilib
         role = _role;
     }
 
-    void Account::setLogin(std::string _login)
+    void Account::setUsername(std::string _username)
     {
-        login = _login;
+        username = _username;
     }
 
     void Account::setPassword(std::string _password)

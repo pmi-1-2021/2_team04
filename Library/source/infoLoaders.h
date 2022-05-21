@@ -10,41 +10,29 @@
 
 namespace amilib
 {
-	class InfoLoader
-	{
-	public:
-		virtual void pull() = 0;
-		//virtual void push() = 0;
-		//virtual void addItem() = 0;
-		//virtual void deleteItem() = 0;
-	private:
-
-	};
-
-	class BooksLoader : public InfoLoader
+	class BooksLoader
 	{
 	public:
 		BooksLoader();
 		~BooksLoader();
-		std::unordered_map<int, Book> books_map;
-		void pull();
+		void pull(std::unordered_map<int, Book>& books_map);
 		//todo
 		//void push();
-		//void addItem();
+		void addItem(Book b);
 		//void deleteItem();
 		//
 	};
 
-	class UsersLoader : public InfoLoader
+	class UsersLoader
 	{
 	public:
 		UsersLoader();
 		~UsersLoader();
-		std::unordered_map<int, amilib::Account> users_map;
-		void pull();
+		//std::unordered_map<int, amilib::Account> users_map;
+		void pull(std::unordered_map<int, amilib::Account>& users_map);
 		//todo
 		//void push();
-		//void addItem();
+		void addItem(Account acc);
 		//void deleteIte);m(
 		//
 	};
