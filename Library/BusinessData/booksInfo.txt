@@ -1,2 +1,4 @@
-1 10 title1 author1 100 book1.txt
-2 10 title2 author2 120 book2.txt
+1 0009 title1 author1 100 book1.txt
+2 0008 title2 author2 120 book2.txt
+3 0007 newbook adminsemsem 343 newbookadminsemsem
+4 0010 newtitle semsem 121 newtitlesemsem

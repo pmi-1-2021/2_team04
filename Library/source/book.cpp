@@ -1,7 +1,17 @@
 #include "book.h"
 
+#include<iostream>
 
 
+amilib::Book::Book()
+	: id(0),
+	ammount(0),
+	title(""),
+	author(""),
+	size(0),
+	fileName("")
+{
+}
 
 amilib::Book::Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName)
 	: id(_id),
@@ -46,4 +56,26 @@ std::string amilib::Book::getFileName()
 void amilib::Book::setAmmount(size_t new_ammount)
 {
 	ammount = new_ammount;
+}
+
+std::istream& amilib::operator>>(std::istream& in, Book& b)
+{
+	in >> b.id >>
+	b.ammount >>
+	b.title >>
+	b.author >>
+	b.size >>
+	b.fileName;
+	return in;
+}
+
+std::ostream& amilib::operator<<(std::ostream& out, Book& b)
+{
+	out << b.id <<
+		b.ammount <<
+		b.title <<
+		b.author <<
+		b.size <<
+		b.fileName;
+	return out;
 }

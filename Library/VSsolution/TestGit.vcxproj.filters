@@ -19,6 +19,15 @@
     <ClCompile Include="..\source\usersloader.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\booklist.cpp">
+      <Filter>cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\transactions.cpp">
+      <Filter>cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\bookstaking.cpp">
+      <Filter>cpps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\book.h">
@@ -31,6 +40,15 @@
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="..\source\account.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\booklist.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\transactions.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\bookstaking.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,7 +67,7 @@
     <Text Include="..\BusinessData\booksInfo.txt">
       <Filter>txts</Filter>
     </Text>
-    <Text Include="..\BusinessData\transactions.txt">
+    <Text Include="..\BusinessData\takings.txt">
       <Filter>txts</Filter>
     </Text>
     <Text Include="..\BusinessData\users.txt">

@@ -140,21 +140,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="..\BusinessData\booksInfo.txt" />
-    <Text Include="..\BusinessData\transactions.txt" />
+    <Text Include="..\BusinessData\takings.txt" />
     <Text Include="..\BusinessData\users.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\book.h" />
+    <ClInclude Include="..\source\booklist.h" />
+    <ClInclude Include="..\source\bookstaking.h" />
     <ClInclude Include="..\source\infoLoaders.h" />
     <ClInclude Include="..\source\menu.h" />
     <ClInclude Include="..\source\account.h" />
+    <ClInclude Include="..\source\transactions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\book.cpp" />
+    <ClCompile Include="..\source\booklist.cpp" />
     <ClCompile Include="..\source\booksloader.cpp" />
+    <ClCompile Include="..\source\bookstaking.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\menu.cpp" />
     <ClCompile Include="..\source\account.cpp" />
+    <ClCompile Include="..\source\transactions.cpp" />
     <ClCompile Include="..\source\usersloader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

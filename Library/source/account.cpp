@@ -23,19 +23,19 @@ namespace amilib
     {
         acc_books.resize(0);
     }
-    int Account::getId()
+    int Account::getId() const
     {
         return id;
     }
-    std::string Account::getRole()
+    std::string Account::getRole() const
     {
         return role;
     }
-    std::string Account::getUsername()
+    std::string Account::getUsername() const
     {
         return username;
     }
-    std::string Account::getPassword()
+    std::string Account::getPassword() const
     {
         return password;
     }
@@ -60,28 +60,28 @@ namespace amilib
         password = _password;
     }
 
-    void Account::addBook(int id)
+    void Account::addBook(int id, bool returned)
     {
-        this->acc_books.push_back(id);
+        this->acc_books.emplace_back(id, returned);
     }
-    void Account::removeBook(int id)
+    void Account::returnBook(int id)
     {
         auto it = this->acc_books.begin();
         for (it; it != this->acc_books.end(); it++)
         {
-            if (*it == id)
+            if (it->first == id)
             {
                 break;
             }
         }
-        this->acc_books.erase(it);
+        it->second = true;
     }
-    bool Account::hasABook(int book_id)
+    bool Account::hasABook(int book_id) const
     {
         bool has = false;
-        for (int id : this->acc_books)
+        for (auto &pair : this->acc_books)
         {
-            if (book_id == id)
+            if (book_id == pair.first && pair.second == false)
             {
                 has = true;
             }

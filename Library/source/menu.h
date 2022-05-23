@@ -1,8 +1,9 @@
 #pragma once
 
+#include "account.h"
 #include "book.h"
 #include "infoLoaders.h"
-#include "account.h"
+#include "transactions.h"
 
 #include <vector>
 #include <unordered_map>
@@ -10,16 +11,21 @@
 
 
 
-namespace amilib
+namespace amilib 
 {
-	class Menu
+	class Menu : virtual public BooksChangesClient, virtual public TakeReturnClient
 	{
 	public:
 		Menu();
-		~Menu();
+		virtual ~Menu();
 		void callMain();
 		void loadAccInfo();
 		void clearInfo();
+		virtual void changeBookAmmount(int book_id, size_t new_ammount);
+		virtual void changeBookInfo(int book_id, Book new_info);
+		virtual void takeBook(int user_id, int book_id);
+		virtual void returnBook(int user_id, int book_id);
+		virtual void addNewBook(Book b);
 	private:
 		bool logIn();
 		void logOut();
@@ -29,7 +35,7 @@ namespace amilib
 		void adminMain();
 		void libBookList();
 		void userBookList();
-		void bookList(std::vector<std::unordered_map<int, Book>::iterator> &available_books);
+		void bookList(std::vector<Book>&);
 		void selectBook(Book& book_to_select);
 		void drawHeader();
 		void bookSearch();

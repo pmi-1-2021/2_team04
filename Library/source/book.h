@@ -8,14 +8,8 @@ namespace amilib
 {
 	class Book
 	{
-	private:
-		int id;
-		size_t ammount;
-		std::string title;
-		std::string author;
-		size_t size;
-		std::string fileName;
 	public:
+		Book();
 		Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
 		int getId();
 		size_t getAmmount();
@@ -24,6 +18,15 @@ namespace amilib
 		std::string getAuthor();
 		std::string getFileName();
 		void setAmmount(size_t new_ammount);
+		friend std::istream& operator>>(std::istream& in, Book& b);
+		friend std::ostream& operator<<(std::ostream& out, Book& b);
+	private:
+		int id;
+		size_t ammount;
+		std::string title;
+		std::string author;
+		size_t size;
+		std::string fileName;
 	};
 
 
