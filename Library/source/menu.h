@@ -21,7 +21,7 @@ namespace amilib
 		void loadAccInfo();
 		void clearInfo();
 	private:
-		void logIn();
+		bool logIn();
 		void logOut();
 		void signUp();
 		void noaccMain();
@@ -33,12 +33,17 @@ namespace amilib
 		void selectBook(Book& book_to_select);
 		void drawHeader();
 		void bookSearch();
-		void updateUsers();
-		void updateBooks();
 		void takeBook(int id);
 		void returnBook(int id);
+		void addNewBook();
+		bool uniqueNewUsername(std::string name);
+		int idAtUsername(std::string name);
+		bool askPassword(Account& a);
+		std::string createFileName(std::string from);
 		Account account;
-		BooksLoader books;
-		UsersLoader users;
+		BooksLoader booksInfo;
+		UsersLoader usersInfo;
+		std::unordered_map<int, amilib::Account> usersMap;
+		std::unordered_map<int, amilib::Book> booksMap;
 	};
 }

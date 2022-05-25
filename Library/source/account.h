@@ -16,12 +16,12 @@ namespace amilib
         ~Account();
         int getId();
         std::string getRole();
-        std::string getLogin();
+        std::string getUsername();
         std::string getPassword();
         void setId(int);
         void setRole(std::string role);
-        void setLogin(std::string login);
-        void setPassword(std::string password);
+        void setUsername(std::string _username);
+        void setPassword(std::string _password);
         void addBook(int id);
         void removeBook(int id);
         bool hasABook(int book_id);
@@ -29,7 +29,7 @@ namespace amilib
     private:
         int id;
         std::string role;
-        std::string login;
+        std::string username;
         std::string password;
     };
 }

@@ -1,5 +1,6 @@
 #include "infoLoaders.h"
 
+#include <iostream>
 #include <fstream>
 
 
@@ -7,7 +8,7 @@
 
 amilib::UsersLoader::UsersLoader()
 {
-	pull();
+
 }
 
 amilib::UsersLoader::~UsersLoader()
@@ -16,7 +17,7 @@ amilib::UsersLoader::~UsersLoader()
 }
 
 
-void amilib::UsersLoader::pull()
+void amilib::UsersLoader::pull(std::unordered_map<int, amilib::Account> &users_map)
 {
 	std::ifstream file("..\\BusinessData\\users.txt");
 	while (!file.eof())
@@ -30,6 +31,13 @@ void amilib::UsersLoader::pull()
 		std::string password;
 		file >> password;
 
-		this->users_map.emplace(std::make_pair(id, Account(id, role, login, password)));
+		users_map.emplace(std::make_pair(id, Account(id, role, login, password)));
 	}
+}
+
+void amilib::UsersLoader::addItem(amilib::Account acc)
+{
+	std::fstream file("..\\BusinessData\\users.txt", std::ios::out | std::ios::app);
+	file << "\n" << acc.getId() << ' ' << acc.getRole() << ' ' << acc.getUsername() << ' ' << acc.getPassword();
+	file.close();
 }
