@@ -146,7 +146,9 @@ void amilib::Menu::logIn()
 			if (ch == 'y')
 			{
 				signUp();
+				break;
 			}
+			
 		}
 	}
 }
