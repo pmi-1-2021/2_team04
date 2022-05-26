@@ -261,9 +261,9 @@ void amilib::Menu::noaccMain()
 	char ch = '-';
 	while (ch != 'c')
 	{
-		system("CLS");
+		//system("CLS");
 		drawHeader();
-		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
+		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n" << std::endl;
 		std::cout << "[l] library book list\n[i] log in\n[u] sign up\n[c] close program\n";
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
 		std::cout << "\n > ";
@@ -461,7 +461,10 @@ void amilib::Menu::selectBook(Book& book_to_select)
 
 void amilib::Menu::drawHeader()
 {
+	printf("Amilib by AMi-11");
+	//std::cout.flush();
 	std::cout << "Amilib by AMi-11" << std::endl;
+	std::cout.flush();
 	std::cout << "==================================================================================\n";
 	std::cout << this->account.getUsername() << "\n";
 	std::cout << "==================================================================================\n\n";
