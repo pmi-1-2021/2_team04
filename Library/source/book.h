@@ -1,8 +1,8 @@
 #pragma once
+#ifndef BOOK_H
+#define BOOK_H
 
 #include <string>
-
-
 
 namespace amilib
 {
@@ -10,7 +10,7 @@ namespace amilib
 	{
 	public:
 		Book();
-		Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
+		Book(size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
 		int getId();
 		size_t getAmmount();
 		size_t getSize();
@@ -27,6 +27,9 @@ namespace amilib
 		std::string author;
 		size_t size;
 		std::string fileName;
+		void setId(int id);
+		friend class AddBookTransaction;
+		friend class BooksDataBase;
 	};
 
 
@@ -76,3 +79,5 @@ namespace amilib
 
 
 }
+
+#endif // !BOOK_H

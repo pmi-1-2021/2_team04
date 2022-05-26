@@ -1,4 +1,4 @@
-#include "infoLoaders.h"
+#include "database.h"
 
 #include <fstream>
 #include <map>
@@ -6,20 +6,20 @@
 
 std::string getAmmountOffset(size_t ammount);
 
-amilib::BooksLoader::BooksLoader(std::string info_file_path)
+amilib::BooksDataBase::BooksDataBase(std::string info_file_path)
 	:infoFilePath(info_file_path)
 {
 }
 
-amilib::BooksLoader::~BooksLoader()
+amilib::BooksDataBase::~BooksDataBase()
 {
 	//todo
 }
 
 
-void amilib::BooksLoader::pull(std::unordered_map<int , Book>& books_map)
+void amilib::BooksDataBase::pull(std::unordered_map<int , Book>& books_map)
 {
-	std::ifstream file("..\\BusinessData\\booksInfo.txt");
+	std::ifstream file(infoFilePath);
 	while (!file.eof())
 	{
 		int id;
@@ -35,32 +35,34 @@ void amilib::BooksLoader::pull(std::unordered_map<int , Book>& books_map)
 		std::string fileName;
 		file >> fileName;
 
-		books_map.emplace(std::make_pair(id, Book(id, ammount, title, author, size, fileName)));
+		Book b(ammount, title, author, size, fileName);
+		b.setId(id);
+		books_map.emplace(std::make_pair(id, b));
 	}
 	file.close();
 }
 
-void amilib::BooksLoader::addItem(Book b)
-{
-	std::string os = "";
-	size_t i = 1000;
-	for ( ; i > 9; i = i / 10)
-	{
-		if (b.getAmmount() % i == b.getAmmount())
-		{
-			os += "0";
-		}
-		else
-		{
-			break;
-		}
-	}
-	std::fstream file("..\\BusinessData\\booksInfo.txt", std::ios::out | std::ios::app);
-	file << b.getId() << ' ' << os << b.getAmmount() << ' ' << b.getTitle() << ' ' << b.getAuthor() << ' ' << b.getSize() << ' ' << b.getFileName() << "\n";
-	file.close();
-}
+//void amilib::BooksDataBase::addItem(Book b)
+//{
+//	std::string os = "";
+//	size_t i = 1000;
+//	for ( ; i > 9; i = i / 10)
+//	{
+//		if (b.getAmmount() % i == b.getAmmount())
+//		{
+//			os += "0";
+//		}
+//		else
+//		{
+//			break;
+//		}
+//	}
+//	std::fstream file(infoFilePath, std::ios::out | std::ios::app);
+//	file << b.getId() << ' ' << os << b.getAmmount() << ' ' << b.getTitle() << ' ' << b.getAuthor() << ' ' << b.getSize() << ' ' << b.getFileName() << "\n";
+//	file.close();
+//}
 
-void amilib::BooksLoader::changeBookAmmount(int book_id, size_t new_ammount)
+void amilib::BooksDataBase::changeBookAmmount(int book_id, size_t new_ammount)
 {
 	std::fstream file(infoFilePath, std::ios::out | std::ios::in);
 	while (!file.eof())
@@ -83,7 +85,7 @@ void amilib::BooksLoader::changeBookAmmount(int book_id, size_t new_ammount)
 	file.close();
 }
 
-void amilib::BooksLoader::changeBookInfo(int book_id, Book new_info)
+void amilib::BooksDataBase::changeBookInfo(int book_id, Book new_info)
 {
 	std::map<int, Book> books;
 	std::ifstream file(infoFilePath);
@@ -105,14 +107,14 @@ void amilib::BooksLoader::changeBookInfo(int book_id, Book new_info)
 	overwtire.close();
 }
 
-void amilib::BooksLoader::addNewBook(Book b)
+void amilib::BooksDataBase::addNewBook(Book b)
 {
 	std::fstream file(infoFilePath, std::ios::out | std::ios::app);
 	file << b.getId() << ' ' << getAmmountOffset(b.getAmmount()) << b.getAmmount() << ' ' << b.getTitle() << ' ' << b.getAuthor() << ' ' << b.getSize() << ' ' << b.getFileName() << "\n";
 	file.close();
 }
 
-void amilib::BooksLoader::takeBook(int user_id, int book_id)
+void amilib::BooksDataBase::takeBook(int user_id, int book_id)
 {
 	std::fstream file(infoFilePath, std::ios::out | std::ios::in);
 	while (!file.eof())
@@ -137,7 +139,7 @@ void amilib::BooksLoader::takeBook(int user_id, int book_id)
 	file.close();
 }
 
-void amilib::BooksLoader::returnBook(int user_id, int book_id)
+void amilib::BooksDataBase::returnBook(int user_id, int book_id)
 {
 	std::fstream file(infoFilePath, std::ios::out | std::ios::in);
 	while (!file.eof())
@@ -150,7 +152,7 @@ void amilib::BooksLoader::returnBook(int user_id, int book_id)
 			size_t ammount;
 			file >> ammount;
 			file.seekp(pos);
-			file << getAmmountOffset(++ammount) << ++ammount;
+			file << getAmmountOffset(++ammount) << ammount;
 			break;
 		}
 		else
@@ -160,6 +162,32 @@ void amilib::BooksLoader::returnBook(int user_id, int book_id)
 		}
 	}
 	file.close();
+}
+
+int amilib::BooksDataBase::createId()
+{
+	std::ifstream file(infoFilePath);
+	file.seekg(-1, std::ios_base::end);
+	bool keepLooping = true;
+	while (keepLooping) {
+		char ch;
+		file.get(ch);                         
+
+		if ((int)file.tellg() <= 1) {       
+			file.seekg(0);                  
+			keepLooping = false;             
+		}
+		else if (ch == '\n') {                   
+			keepLooping = false;                
+		}
+		else {                                
+			file .seekg(-2, std::ios_base::cur);
+		}
+	}
+	int lastId;
+	file >> lastId;
+	file.close();
+	return ++lastId;
 }
 
 std::string getAmmountOffset(size_t ammount)

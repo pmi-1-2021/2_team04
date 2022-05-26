@@ -4,7 +4,7 @@
     <ClCompile Include="..\source\book.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\booksloader.cpp">
+    <ClCompile Include="..\source\books_database.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
     <ClCompile Include="..\source\main.cpp">
@@ -16,16 +16,22 @@
     <ClCompile Include="..\source\account.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\usersloader.cpp">
+    <ClCompile Include="..\source\users_database.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
     <ClCompile Include="..\source\booklist.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\transactions.cpp">
+    <ClCompile Include="..\source\bookstaking.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\bookstaking.cpp">
+    <ClCompile Include="..\source\idcreator.cpp">
+      <Filter>cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\user_transactions.cpp">
+      <Filter>cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\book_transactions.cpp">
       <Filter>cpps</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,7 +39,7 @@
     <ClInclude Include="..\source\book.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\infoLoaders.h">
+    <ClInclude Include="..\source\database.h">
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="..\source\menu.h">
@@ -45,10 +51,16 @@
     <ClInclude Include="..\source\booklist.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\transactions.h">
+    <ClInclude Include="..\source\bookstaking.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\bookstaking.h">
+    <ClInclude Include="..\source\idcreator.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\book_transactions.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\user_transactions.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

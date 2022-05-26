@@ -1,11 +1,13 @@
-#include"account.h"
+#include "account.h"
 
+
+#include<iostream>
 
 
 namespace amilib
 {
-    Account::Account(int _id, std::string _role, std::string _username, std::string _password)
-        : id(_id),
+    Account::Account(std::string _role, std::string _username, std::string _password)
+        : id(0),
         role(_role),
         username(_username),
         password(_password)
@@ -87,5 +89,15 @@ namespace amilib
             }
         }
         return has;
+    }
+    std::istream& operator>>(std::istream& in, Account& a)
+    {
+        in >> a.id >> a.role >> a.username >> a.password;
+        return in;
+    }
+    std::ostream& operator<<(std::ostream& out, Account& a)
+    {
+        out << a.id << a.role << a.username << a.password;
+        return out;
     }
 }

@@ -2,6 +2,9 @@
 #include "account.h"
 #include "booklist.h"
 #include "bookstaking.h"
+#include "idcreator.h"
+#include "book_transactions.h"
+#include "user_transactions.h"
 
 #include <iostream>
 #include <fstream>
@@ -10,13 +13,14 @@
 
 
 
-amilib::Menu::Menu() 
+amilib::Menu::Menu(BooksDataBase books_data_base, UsersDataBase users_data_base)
 	: account(),
-	booksMap(),
-	usersInfo(),
-	booksInfo(BooksLoader("..\\BusinessData\\booksInfo.txt")),
-	usersMap()
+	usersInfo(users_data_base),
+	booksInfo(books_data_base),
+	usersMap(),
+	booksMap()
 {
+	std::cout << "[Debug] Constructor() menu";
 	/*this->account = Account();
 	this->usersInfo = UsersLoader();*/
 	this->usersInfo.pull(usersMap);
@@ -27,6 +31,7 @@ amilib::Menu::Menu()
 
 amilib::Menu::~Menu()
 {
+	std::cout << "[Debug] ~Destructor() menu";
 	//todo
 }
 
@@ -59,12 +64,12 @@ void amilib::Menu::loadAccInfo()
 	}
 	else if (this->account.getRole() == "user")
 	{
-		BooksTaking takings("..\\BusinessData\\takings.txt");
+		BooksTakingBase takings("..\\BusinessData\\takings.txt");
 		takings.fillAccount(this->account);
 	}
 	else if (this->account.getRole() == "admin")
 	{
-		BooksTaking takings("..\\BusinessData\\takings.txt");
+		BooksTakingBase takings("..\\BusinessData\\takings.txt");
 		takings.fillAllAccounts(this->usersMap);
 		this->account.acc_books = usersMap.at(this->account.getId()).acc_books;
 	}
@@ -167,10 +172,7 @@ bool amilib::Menu::logIn()
 			loggedIn = askPassword(a);
 			if (loggedIn)
 			{
-				this->account.setId(a.getId());
-				this->account.setRole(a.getRole());
-				this->account.setUsername(a.getUsername());
-				this->account.setPassword(a.getPassword());
+				this->account = a;
 				loadAccInfo();
 				system("CLS");
 				std::cout << "\nLogged in!\n Press enter to continue\n > ";
@@ -217,7 +219,7 @@ void amilib::Menu::signUp()
 		{
 			return;
 		}
-		unique = uniqueNewUsername(new_username);
+		unique = this->usersInfo.isExist(new_username);
 		if (!unique)
 		{
 			std::cout << "\nThis username is unavailable\n[x] to go back\n[r] to try another username\n > ";
@@ -239,8 +241,6 @@ void amilib::Menu::signUp()
 	{
 		return;
 	}
-	std::unordered_map<int, Account>::iterator it = --this->usersMap.end();
-	int new_id = (int)(it->first) + 1;
 	std::cout << "\nEnter new password:\n > ";
 	std::string new_password;
 	std::cin >> new_password;
@@ -248,9 +248,12 @@ void amilib::Menu::signUp()
 	{
 		return;
 	}
-	Account a(new_id, new_role, new_username, new_password);
-	usersMap.insert({ new_id, a });
-	usersInfo.addItem(a);
+	Account a(new_role, new_username, new_password);
+	CreateTransaction* factory = new CreateAddUserTransaction(a);
+	Transaction* t = factory->createBy(this->account.getId());
+	t->execute();
+	delete factory;
+	delete t;
 	std::cout << "Account is successfully created!\n Press enter to go back\n > ";
 	std::cin.ignore();
 	std::cin.ignore();
@@ -485,8 +488,8 @@ void amilib::Menu::takeBook(int book_id)
 	}
 	else
 	{
-		CreateTransaction* factory = new CreateTransactionTakeBook(this->account.getId(), book_id);
-		Transaction* t = factory->createBy(this->account.getRole());
+		CreateTransaction* factory = new CreateTakeBookTransaction(book_id);
+		Transaction* t = factory->createBy(this->account.getId());
 		delete factory;
 		t->execute();
 		delete t;
@@ -498,8 +501,8 @@ void amilib::Menu::takeBook(int book_id)
 
 void amilib::Menu::returnBook(int book_id)
 {
-	CreateTransaction* factory = new CreateTransactionReturnBook(this->account.getId(), book_id);
-	Transaction* t = factory->createBy(this->account.getRole());
+	CreateTransaction* factory = new CreateReturnBookTransaction(book_id);
+	Transaction* t = factory->createBy(this->account.getId());
 	delete factory;
 	t->execute();
 	delete t;
@@ -542,9 +545,9 @@ void amilib::Menu::addNewBook()
 	}
 	std::string new_file_name(createFileName(new_title + new_athor));
 	int new_id = (--(this->booksMap.end()))->first + 1;
-	Book b (new_id, new_ammount, new_title, new_athor, new_size, new_file_name);
-	CreateTransaction* factory = new CreateTransactionAddBook(b);
-	Transaction* addBook = factory->createBy(this->account.getRole());
+	Book b (new_ammount, new_title, new_athor, new_size, new_file_name);
+	CreateTransaction* factory = new CreateAddBookTransaction(b);
+	Transaction* addBook = factory->createBy(this->account.getId());
 	addBook->execute();
 	std::cout << "New book was successfully added!\nPress enter to go back\n > ";
 	std::cin.ignore();

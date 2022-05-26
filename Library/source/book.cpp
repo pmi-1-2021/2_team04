@@ -13,8 +13,8 @@ amilib::Book::Book()
 {
 }
 
-amilib::Book::Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName)
-	: id(_id),
+amilib::Book::Book(size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName)
+	: id(0),
 	ammount(_ammount),
 	title(_title),
 	author(_author),
@@ -56,6 +56,11 @@ std::string amilib::Book::getFileName()
 void amilib::Book::setAmmount(size_t new_ammount)
 {
 	ammount = new_ammount;
+}
+
+void amilib::Book::setId(int new_id)
+{
+	this->id = new_id;
 }
 
 std::istream& amilib::operator>>(std::istream& in, Book& b)

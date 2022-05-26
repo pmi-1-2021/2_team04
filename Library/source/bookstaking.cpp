@@ -4,23 +4,23 @@
 
 #include <fstream>
 
-amilib::BooksTaking::BooksTaking(std::string file_path)
+amilib::BooksTakingBase::BooksTakingBase(std::string file_path)
 	: filePath(file_path)
 {
 }
 
-amilib::BooksTaking::~BooksTaking()
+amilib::BooksTakingBase::~BooksTakingBase()
 {
 }
 
-void amilib::BooksTaking::takeBook(int user_id, int book_id)
+void amilib::BooksTakingBase::takeBook(int user_id, int book_id)
 {
 	std::fstream file(filePath, std::ios::app);
 	file << user_id << ' ' << book_id << ' ' << 0 << "\n";
 	file.close();
 }
 
-void amilib::BooksTaking::returnBook(int this_user_id, int this_book_id)
+void amilib::BooksTakingBase::returnBook(int this_user_id, int this_book_id)
 {
 	bool done = false;
 	std::fstream file(filePath, std::ios::out | std::ios::in);
@@ -53,7 +53,7 @@ void amilib::BooksTaking::returnBook(int this_user_id, int this_book_id)
 	}
 }
 
-void amilib::BooksTaking::fillAccount(Account& a)
+void amilib::BooksTakingBase::fillAccount(Account& a)
 {
 	std::fstream file(filePath, std::ios::out | std::ios::in);
 	while (!file.eof())
@@ -76,7 +76,7 @@ void amilib::BooksTaking::fillAccount(Account& a)
 	file.close();
 }
 
-void amilib::BooksTaking::fillAllAccounts(std::unordered_map<int, amilib::Account>& users_map)
+void amilib::BooksTakingBase::fillAllAccounts(std::unordered_map<int, amilib::Account>& users_map)
 {
 	bool skipped = false;
 	std::ifstream file(filePath);

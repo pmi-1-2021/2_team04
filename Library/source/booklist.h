@@ -1,4 +1,7 @@
 #pragma once
+#ifndef BOOKLIST_H
+#define BOOKLIST_H
+
 
 #include "book.h"
 
@@ -19,3 +22,4 @@ namespace amilib
 		void drawControlPanelReverse();
 	};
 }
+#endif // !BOOKLIST_H

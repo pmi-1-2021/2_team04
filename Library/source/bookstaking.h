@@ -1,6 +1,10 @@
 #pragma once
+#ifndef BOOKSTAKING_H
+#define BOOKSTAKING_H
 
-#include "transactions.h"
+
+
+#include "idcreator.h"
 #include "account.h"
 
 #include <string>
@@ -8,11 +12,11 @@
 
 namespace amilib
 {
-	class BooksTaking : public TakeReturnClient
+	class BooksTakingBase : public TakeReturnClient
 	{
 	public:
-		BooksTaking(std::string file_path);
-		virtual ~BooksTaking();
+		BooksTakingBase(std::string file_path);
+		virtual ~BooksTakingBase();
 		virtual void takeBook(int user_id, int book_id);
 		virtual void returnBook(int user_id, int book_id);
 		void fillAccount(Account& a);
@@ -21,3 +25,4 @@ namespace amilib
 		std::string filePath;
 	};
 }
+#endif // !BOOKSTAKING_H

@@ -1,9 +1,11 @@
 #pragma once
+#ifndef MENU_H
+#define MENU_H
+
 
 #include "account.h"
 #include "book.h"
-#include "infoLoaders.h"
-#include "transactions.h"
+#include "database.h"
 
 #include <vector>
 #include <unordered_map>
@@ -16,7 +18,7 @@ namespace amilib
 	class Menu : virtual public BooksChangesClient, virtual public TakeReturnClient
 	{
 	public:
-		Menu();
+		Menu(BooksDataBase books_data_base, UsersDataBase users_data_base);
 		virtual ~Menu();
 		void callMain();
 		void loadAccInfo();
@@ -47,9 +49,10 @@ namespace amilib
 		bool askPassword(Account& a);
 		std::string createFileName(std::string from);
 		Account account;
-		BooksLoader booksInfo;
-		UsersLoader usersInfo;
+		BooksDataBase booksInfo;
+		UsersDataBase usersInfo;
 		std::unordered_map<int, amilib::Account> usersMap;
 		std::unordered_map<int, amilib::Book> booksMap;
 	};
 }
+#endif // !MENU_H
