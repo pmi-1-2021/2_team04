@@ -16,6 +16,11 @@ void amilib::BookList::draw()
 		std::cout << "[" << i << "]\t" << bookVec[i].getTitle() << "\t\t\t\t\t\t"
 			<< bookVec[i].getAuthor() << "\n";
 	}
+	if (bookVec.size() == 0)
+	{
+		std::cout << "You have no books yet.\n"
+			"To take one, select it in library list in the main menu\n";
+	}
 	if (bookVec.size() > 25)
 	{
 		drawControlPanelReverse();

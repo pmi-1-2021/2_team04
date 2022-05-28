@@ -6,7 +6,7 @@
 
 
 #include "book.h"
-#include "idcreator.h"
+#include "global_transactions.h"
 
 #include <string>
 #include <vector>
@@ -14,10 +14,10 @@
 
 namespace amilib
 {
-	class AddBookTransaction : public Transaction
+	class AddBookTransaction : public GlobalFileTransaction
 	{
 	public:
-		AddBookTransaction(int by_id, amilib::Book new_book, std::vector<BooksChangesClient*>);
+		AddBookTransaction(int by_id, amilib::Book new_book, std::vector<BooksChangesClient*>&&);
 		virtual void execute();
 		//todo : private:
 		static IdCreator* ids;
@@ -31,15 +31,15 @@ namespace amilib
 	{
 	public:
 		CreateAddBookTransaction(Book new_book);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		Book toAdd;
 	};
 
-	class ChangeBookInfoTransaction : public Transaction
+	class ChangeBookInfoTransaction : public GlobalFileTransaction
 	{
 	public:
-		ChangeBookInfoTransaction(int by_id, int book_id, Book for_book, std::vector<BooksChangesClient*>);
+		ChangeBookInfoTransaction(int by_id, int book_id, Book for_book, std::vector<BooksChangesClient*>&&);
 		virtual void execute();
 	private:
 		int byId;
@@ -52,16 +52,16 @@ namespace amilib
 	{
 	public:
 		CreateChangeBookInfoTransaction(int book_id, Book for_book);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		int bookId;
 		amilib::Book changedBook;
 	};
 
-	class TakeBookTransaction : public Transaction
+	class TakeBookTransaction : public GlobalFileTransaction
 	{
 	public:
-		TakeBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>);
+		TakeBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>&&);
 		virtual void execute();
 	private:
 		int userId;
@@ -73,15 +73,15 @@ namespace amilib
 	{
 	public:
 		CreateTakeBookTransaction(int book_id);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		int bookId;
 	};
 
-	class ReturnBookTransaction : public Transaction
+	class ReturnBookTransaction : public GlobalFileTransaction
 	{
 	public:
-		ReturnBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>);
+		ReturnBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>&&);
 		virtual void execute();
 	private:
 		int userId;
@@ -93,7 +93,7 @@ namespace amilib
 	{
 	public:
 		CreateReturnBookTransaction(int book_id);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		int bookId;
 	};

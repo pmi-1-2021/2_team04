@@ -18,6 +18,9 @@ namespace amilib
 		std::string getAuthor();
 		std::string getFileName();
 		void setAmmount(size_t new_ammount);
+		void setTitle(std::string new_title);
+		void setAuthor(std::string new_author);
+		void setSize(size_t new_size);
 		friend std::istream& operator>>(std::istream& in, Book& b);
 		friend std::ostream& operator<<(std::ostream& out, Book& b);
 	private:

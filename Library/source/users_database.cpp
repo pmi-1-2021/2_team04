@@ -48,17 +48,19 @@ void amilib::UsersDataBase::changeUserInfo(int user_id, Account new_info)
 void amilib::UsersDataBase::addNewUser(Account a)
 {
 	std::fstream file(infoFilePath, std::ios::out | std::ios::app);
-	file << "\n" << a.getId() << ' ' << a.getRole() << ' ' << a.getUsername() << ' ' << a.getPassword();
+	file << a.getId() << ' ' << a.getRole() << ' ' << a.getUsername()
+		<< ' ' << a.getPassword() << "\n";
 	file.close();
 }
 
 int amilib::UsersDataBase::createId()
 {
+	//read file backwards untill begining of the last line(id)
 	std::ifstream file(infoFilePath);
-	file.seekg(-1, std::ios_base::end);
+	file.seekg(-3, std::ios_base::end);// skip last /n
+	char ch;
 	bool keepLooping = true;
 	while (keepLooping) {
-		char ch;
 		file.get(ch);
 
 		if ((int)file.tellg() <= 1) {

@@ -1,5 +1,5 @@
 #include "menu.h"
-#include "idcreator.h"
+#include "global_transactions.h"
 #include "user_transactions.h"
 #include "book_transactions.h"
 #include "bookstaking.h"
@@ -25,20 +25,20 @@ int main()
 	amilib::AddBookTransaction::ids = bookIdCreator;
 	amilib::AddUserTransaction::ids = userIdCreator;
 
-	amilib::TransactionsClient* booksBaseTclient = new amilib::BooksDataBase("..\\BusinessData\\booksInfo.txt");
-	amilib::TransactionsClient* usersBaseTclient = new amilib::UsersDataBase("..\\BusinessData\\users.txt");
-	amilib::TransactionsClient* takeReturnBaseTclient = new amilib::BooksTakingBase("..\\BusinessData\\takings.txt");
+	amilib::GlobalFileTransactionsClient* booksBaseTclient = new amilib::BooksDataBase("..\\BusinessData\\booksInfo.txt");
+	amilib::GlobalFileTransactionsClient* usersBaseTclient = new amilib::UsersDataBase("..\\BusinessData\\users.txt");
+	amilib::GlobalFileTransactionsClient* takeReturnBaseTclient = new amilib::BooksTakingBase("..\\BusinessData\\takings.txt");
 
-	std::vector<amilib::TransactionsClient*> transactionClients;
+	std::vector<amilib::GlobalFileTransactionsClient*> transactionClients;
 	transactionClients.push_back(takeReturnBaseTclient);
 	transactionClients.push_back(booksBaseTclient);
 	transactionClients.push_back(usersBaseTclient);
 	amilib::CreateTransaction::clients = transactionClients;
 
-	amilib::TransactionsClient* m = new amilib::Menu(*booksBase, *usersBase);
+	amilib::GlobalFileTransactionsClient* m = new amilib::Library(*booksBase, *usersBase);
 	amilib::CreateTransaction::addClient(m);
 
-	amilib::Menu* menu = dynamic_cast<amilib::Menu*>(m);
-	menu->callMain();
+	amilib::Library* menu = dynamic_cast<amilib::Library*>(m);
+	menu->callMenu();
 	return 0;
 }

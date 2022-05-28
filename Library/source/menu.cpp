@@ -2,9 +2,10 @@
 #include "account.h"
 #include "booklist.h"
 #include "bookstaking.h"
-#include "idcreator.h"
+#include "global_transactions.h"
 #include "book_transactions.h"
 #include "user_transactions.h"
+#include "book_menu.h"
 
 #include <iostream>
 #include <fstream>
@@ -13,29 +14,23 @@
 
 
 
-amilib::Menu::Menu(BooksDataBase books_data_base, UsersDataBase users_data_base)
+amilib::Library::Library(BooksDataBase books_data_base, UsersDataBase users_data_base)
 	: account(),
-	usersInfo(users_data_base),
-	booksInfo(books_data_base),
+	usersDB(users_data_base),
+	booksDB(books_data_base),
 	usersMap(),
 	booksMap()
 {
-	std::cout << "[Debug] Constructor() menu";
-	/*this->account = Account();
-	this->usersInfo = UsersLoader();*/
-	this->usersInfo.pull(usersMap);
-	this->booksInfo.pull(booksMap);
-	//this->books = BooksLoader();
-	//books.pull();
+	this->booksDB.pull(this->booksMap);
 }
 
-amilib::Menu::~Menu()
+amilib::Library::~Library()
 {
 	std::cout << "[Debug] ~Destructor() menu";
 	//todo
 }
 
-void amilib::Menu::callMain()
+void amilib::Library::callMenu()
 {
 	std::string role = "";
 	while (role != this->account.getRole())
@@ -43,51 +38,50 @@ void amilib::Menu::callMain()
 		role = this->account.getRole();
 		if (role == "unknown")
 		{
-			noaccMain();
+			noaccMenu();
 		}
 		else if (role == "user")
 		{
-			userMain();
+			userMenu();
 		}
 		else if (role == "admin")
 		{
-			adminMain();
+			adminMenu();
 		}
 	}
 }
 
-void amilib::Menu::loadAccInfo()
+void amilib::Library::loadAccInfo()
 {
 	if (this->account.getRole() == "unknown")
 	{
 		return;
 	}
-	else if (this->account.getRole() == "user")
+	BooksTakingBase takings("..\\BusinessData\\takings.txt");
+	takings.fillAccount(this->account);
+	if (this->account.getRole() == "admin")
 	{
-		BooksTakingBase takings("..\\BusinessData\\takings.txt");
-		takings.fillAccount(this->account);
-	}
-	else if (this->account.getRole() == "admin")
-	{
-		BooksTakingBase takings("..\\BusinessData\\takings.txt");
 		takings.fillAllAccounts(this->usersMap);
-		this->account.acc_books = usersMap.at(this->account.getId()).acc_books;
+	}
+	else
+	{
+		this->usersMap.clear();
 	}
 }
 
-void amilib::Menu::clearInfo()
+void amilib::Library::clearInfo()
 {
 	//todo
-	std::cout << "\nnot implemented\n";
+	throw std::string("not implemented");
 	system("pause");
 }
 
-void amilib::Menu::changeBookAmmount(int book_id, size_t new_ammount)
+void amilib::Library::changeBookAmmount(int book_id, size_t new_ammount)
 {
 	this->booksMap.at(book_id).setAmmount(new_ammount);
 }
 
-void amilib::Menu::changeBookInfo(int book_id, Book new_info)
+void amilib::Library::changeBookInfo(int book_id, Book new_info)
 {
 	try
 	{
@@ -99,7 +93,7 @@ void amilib::Menu::changeBookInfo(int book_id, Book new_info)
 	}
 }
 
-void amilib::Menu::takeBook(int user_id, int book_id)
+void amilib::Library::takeBook(int user_id, int book_id)
 {
 	this->account.addBook(book_id, false);
 	if (this->account.getRole() == "admin")
@@ -115,7 +109,7 @@ void amilib::Menu::takeBook(int user_id, int book_id)
 	}
 }
 
-void amilib::Menu::returnBook(int user_id, int book_id)
+void amilib::Library::returnBook(int user_id, int book_id)
 {
 	this->account.returnBook(book_id);
 	if (this->account.getRole() == "admin")
@@ -131,40 +125,32 @@ void amilib::Menu::returnBook(int user_id, int book_id)
 	}
 }
 
-void amilib::Menu::addNewBook(Book b)
+void amilib::Library::addNewBook(Book b)
 {
 	this->booksMap.insert({ b.getId(), b });
 }
 
-bool amilib::Menu::logIn()
+bool amilib::Library::logInForm()
 {
 	system("CLS");
 	drawHeader();
+	this->usersDB.pull(this->usersMap);
 	bool loggedIn = false;
 	while (!loggedIn)
 	{
 		std::cout << "Enter [x] to return back\n\n";
 		std::cout << "Enter your username > ";
 		std::string entered_username;
+		std::cin.clear();
 		std::cin >> entered_username;
 		if (entered_username == "x")
 		{
 			break;
 		}
-		int id = idAtUsername(entered_username);
+		int id = idAtUsernameInMap(entered_username);
 		if (id == 0)
 		{
-			std::cout << "Incorrect username!\nEnter [r] to try again\n[x] to return back\n >";
-			char ch;
-			std::cin >> ch;
-			if (ch == 'r')
-			{
-				continue;
-			}
-			else if (ch == 'x')
-			{
-				break;
-			}
+			std::cout << "\Account with this username does not exist!\n";
 		}
 		else
 		{
@@ -189,12 +175,12 @@ bool amilib::Menu::logIn()
 	return loggedIn;
 }
 
-void amilib::Menu::logOut()
+void amilib::Library::logOut()
 {
 	this->account = Account();
 }
 
-void amilib::Menu::signUp()
+void amilib::Library::signUpForm()
 {
 	system("CLS");
 	std::string new_role;
@@ -207,50 +193,33 @@ void amilib::Menu::signUp()
 	{
 		new_role = "user";
 	}
-	bool go_back = false;
 	bool unique = true;
 	std::string new_username;
 	do
 	{
 		unique = true;
-		std::cout << "\nEnter [x] to cancel adding\nRegistration:\nEnter username:\n > ";
+		std::cout << "\nEnter [x] to cancel creating new account\nRegistration:\nEnter username:\n > ";
 		std::cin >> new_username;
 		if (new_username == "x")
 		{
 			return;
 		}
-		unique = this->usersInfo.isExist(new_username);
+		unique = !this->usersDB.isExist(new_username);
 		if (!unique)
 		{
-			std::cout << "\nThis username is unavailable\n[x] to go back\n[r] to try another username\n > ";
-			char ch;
-			std::cin >> ch;
-			if (ch == 'x')
-			{
-				go_back = true;
-				break;
-			}
-			else if (ch == 'r')
-			{
-				system("CLS");
-			}
-			system("CLS");
+			std::cout << "\nThis username is unavailable\n";
 		}
 	} while (!unique);
-	if (go_back)
-	{
-		return;
-	}
 	std::cout << "\nEnter new password:\n > ";
 	std::string new_password;
 	std::cin >> new_password;
-	if (new_username == "x")
+	if (new_password == "x")
 	{
 		return;
 	}
 	Account a(new_role, new_username, new_password);
 	CreateTransaction* factory = new CreateAddUserTransaction(a);
-	Transaction* t = factory->createBy(this->account.getId());
+	GlobalFileTransaction* t = factory->createBy(this->account.getId());
 	t->execute();
 	delete factory;
 	delete t;
@@ -259,7 +228,7 @@ void amilib::Menu::signUp()
 	std::cin.ignore();
 }
 
-void amilib::Menu::noaccMain()
+void amilib::Library::noaccMenu()
 {
 	char ch = '-';
 	while (ch != 'c')
@@ -277,19 +246,19 @@ void amilib::Menu::noaccMain()
 		}
 		else if (ch == 'i')
 		{
-			if (logIn())
+			if (logInForm())
 			{
 				break;
 			}
 		}
 		else if (ch == 'u')
 		{
-			signUp();
+			signUpForm();
 		}
 	}
 }
 
-void amilib::Menu::userMain()
+void amilib::Library::userMenu()
 {
 	char ch = '-';
 	while (ch != 'c')
@@ -317,7 +286,7 @@ void amilib::Menu::userMain()
 	}
 }
 
-void amilib::Menu::adminMain()
+void amilib::Library::adminMenu()
 {
 	char ch = '-';
 	while (ch != 'c')
@@ -339,11 +308,11 @@ void amilib::Menu::adminMain()
 		}
 		else if (ch == 'b')
 		{
-			addNewBook();
+			newBookForm();
 		}
 		else if (ch == 'a')
 		{
-			signUp();
+			signUpForm();
 		}
 		else if (ch == 'o')
 		{
@@ -353,7 +322,7 @@ void amilib::Menu::adminMain()
 	}
 }
 
-void amilib::Menu::libBookList()
+void amilib::Library::libBookList()
 {
 	std::vector<Book> available_books;
 	for (std::unordered_map<int, Book>::iterator it = booksMap.begin(); 
@@ -367,7 +336,7 @@ void amilib::Menu::libBookList()
 	bookList(available_books);
 }
 
-void amilib::Menu::userBookList()
+void amilib::Library::userBookList()
 {
 	std::vector<Book> acc_books;
 	for (std::vector<std::pair<int, bool>>::iterator it = this->account.acc_books.begin();
@@ -381,7 +350,7 @@ void amilib::Menu::userBookList()
 	bookList(acc_books);
 }
 
-void amilib::Menu::bookList(std::vector<Book> &visible_books)
+void amilib::Library::bookList(std::vector<Book> &visible_books)
 {
 	system("CLS");
 	drawHeader();
@@ -397,72 +366,44 @@ void amilib::Menu::bookList(std::vector<Book> &visible_books)
 	}
 }
 
-void amilib::Menu::selectBook(Book& book_to_select)
+void amilib::Library::selectBook(Book& book_to_select)
 {
-	char ch = '-';
-	while (ch != 'x')
+	bool book_is_taken = this->account.hasABook(book_to_select.getId());
+	BookMenu bm(book_to_select, this->account.getRole(), book_is_taken);
+	do
 	{
-		system("CLS");
-		drawHeader();
-		std::cout << "Title\t" << book_to_select.getTitle() << "\n";
-		std::cout << "Author\t" << book_to_select.getAuthor() << "\n";
-		std::cout << "Pages\t" << book_to_select.getSize() << "\n";
-		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
-		bool book_is_taken = this->account.hasABook(book_to_select.getId());
-		if (book_is_taken)
+		bm.draw();
+		char ch = bm.getAction();
+		if (ch == 'r')
 		{
-			std::cout << "[r] read book\n[b] return the book\n";
+			//todo
+			std::cout << "\nnot implemented\n";
+			system("pause");
 		}
-		else
+		else if (ch == 'b')
 		{
-			std::cout << "[t] take book\n";
-		}
-		if (this->account.getRole() == "admin")
-		{
-			std::cout << "[e] open in editor\n";
-		}
-		std::cout << "[x] return back\n";
-		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
-		std::cout << "\n > ";
-		std::cin >> ch;
-		if (book_is_taken)
-		{
-			if (ch == 'r')
-			{
-				//todo
-				std::cout << "\nnot implemented\n";
-				system("pause");
-			}
-			else if (ch == 'b')
-			{
-				returnBook(book_to_select.getId());
-				std::cout << "\nPress enter to continue\n > ";
-				std::cin.ignore();
-				std::cin.ignore();
-				break;
-			}
-		}
-		else if (ch == 't')
-		{
-			takeBook(book_to_select.getId());
+			transactionReturnBook(book_to_select.getId());
+			bm.setIsBookTaken(false);
 			std::cout << "\nPress enter to continue\n > ";
 			std::cin.ignore();
 			std::cin.ignore();
-			break;
 		}
-		if (this->account.getRole() == "admin")
+		else if (ch == 't')
 		{
-			if (ch == 'e')
-			{
-				//todo
-				std::cout << "\nnot implemented\n";
-				system("pause");
-			}
+			transactionTakeBook(book_to_select.getId());
+			bm.setIsBookTaken(true);
+			std::cout << "\nPress enter to continue\n > ";
+			std::cin.ignore();
+			std::cin.ignore();
 		}
-	}
+		else if (ch == 'e')
+		{
+			editBookForm(book_to_select);
+		}
+	} while (!bm.exitKey());
 }
 
-void amilib::Menu::drawHeader()
+void amilib::Library::drawHeader()
 {
 	std::cout << "Amilib by AMi-11" << std::endl;
 	std::cout << "==================================================================================\n";
@@ -470,14 +411,14 @@ void amilib::Menu::drawHeader()
 	std::cout << "==================================================================================\n\n";
 }
 
-void amilib::Menu::bookSearch()
+void amilib::Library::bookSearch()
 {
 	//todo
 	throw "not implemented";
 }
 
 
-void amilib::Menu::takeBook(int book_id)
+void amilib::Library::transactionTakeBook(int book_id)
 {
 	if (this->account.getRole() == "unknown")
 	{
@@ -486,33 +427,23 @@ void amilib::Menu::takeBook(int book_id)
 		std::cin.ignore();
 		return;
 	}
-	else
-	{
-		CreateTransaction* factory = new CreateTakeBookTransaction(book_id);
-		Transaction* t = factory->createBy(this->account.getId());
-		delete factory;
-		t->execute();
-		delete t;
-	}
-	std::cout << "Book is taken.\nPress enter to go back\n > ";
-	std::cin.ignore();
-	std::cin.ignore();
-}
-
-void amilib::Menu::returnBook(int book_id)
-{
-	CreateTransaction* factory = new CreateReturnBookTransaction(book_id);
-	Transaction* t = factory->createBy(this->account.getId());
+	CreateTransaction* factory = new CreateTakeBookTransaction(book_id);
+	GlobalFileTransaction* t = factory->createBy(this->account.getId());
 	delete factory;
 	t->execute();
 	delete t;
-
-	std::cout << "Book is returned\nPress enter to go back\n > ";
-	std::cin.ignore();
-	std::cin.ignore();
 }
 
-void amilib::Menu::addNewBook()
+void amilib::Library::transactionReturnBook(int book_id)
+{
+	CreateTransaction* factory = new CreateReturnBookTransaction(book_id);
+	GlobalFileTransaction* t = factory->createBy(this->account.getId());
+	delete factory;
+	t->execute();
+	delete t;
+}
+
+void amilib::Library::newBookForm()
 {
 	system("CLS");
 	std::cout << "\nEnter [x] to cancel adding\nEnter the title:\n > ";
@@ -547,28 +478,72 @@ void amilib::Menu::addNewBook()
 	int new_id = (--(this->booksMap.end()))->first + 1;
 	Book b (new_ammount, new_title, new_athor, new_size, new_file_name);
 	CreateTransaction* factory = new CreateAddBookTransaction(b);
-	Transaction* addBook = factory->createBy(this->account.getId());
+	GlobalFileTransaction* addBook = factory->createBy(this->account.getId());
 	addBook->execute();
 	std::cout << "New book was successfully added!\nPress enter to go back\n > ";
 	std::cin.ignore();
 	std::cin.ignore();
 }
 
-bool amilib::Menu::uniqueNewUsername(std::string name)
+void amilib::Library::editBookForm(Book b)
 {
-	bool unique = true;
-	for (std::unordered_map<int, Account>::iterator it = usersMap.begin();
-		it != usersMap.end(); it ++)
+	system("CLS");
+	std::cout << "Title\t" << b.getTitle() << "\n";
+	std::cout << "Author\t" << b.getAuthor() << "\n";
+	std::cout << "Pages\t" << b.getSize() << "\n";
+	std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
+	std::cout << "\nEnter [x] to cancel editing\n"
+		"Enter[t] to change title\n"
+		"Enter[a] to change author\n"
+		"Enter[p] to change pages size\n";
+	std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
+	std::cout << " > ";
+	char ch;
+	std::cin >> ch;
+	std::cout << "\nChange to: \n > ";
+	std::string newInfo;
+	std::cin >> newInfo;
+	if (ch == 'x')
 	{
-		if (it->second.getUsername() == name)
-		{
-			unique = false;
-		}
+		return;
 	}
-	return unique;
+	else if (ch == 't')
+	{
+		b.setTitle(newInfo);
+	}
+	else if (ch == 'a')
+	{
+		b.setAuthor(newInfo);
+	}
+	else if (ch == 'p')
+	{
+		size_t newSize = std::stoul(newInfo);
+		b.setSize(newSize);
+	}
+
+	CreateTransaction* factory = new CreateChangeBookInfoTransaction(b.getId(), b);
+	GlobalFileTransaction* addBook = factory->createBy(this->account.getId());
+	addBook->execute();
+	std::cout << "The book's info was successfully changed!\nPress enter to go back\n > ";
+	std::cin.ignore();
+	std::cin.ignore();
 }
 
-int amilib::Menu::idAtUsername(std::string name)
+//bool amilib::Menu::uniqueNewUsername(std::string name)
+//{
+//	bool unique = true;
+//	for (std::unordered_map<int, Account>::iterator it = usersMap.begin();
+//		it != usersMap.end(); it ++)
+//	{
+//		if (it->second.getUsername() == name)
+//		{
+//			unique = false;
+//		}
+//	}
+//	return unique;
+//}
+
+int amilib::Library::idAtUsernameInMap(std::string name)
 {
 	std::unordered_map<int, Account>::iterator it = usersMap.begin();
 	for ( ; it != usersMap.end(); it++)
@@ -581,30 +556,29 @@ int amilib::Menu::idAtUsername(std::string name)
 	return 0;
 }
 
-bool amilib::Menu::askPassword(Account& a)
+bool amilib::Library::askPassword(Account& a)
 {
-	std::cout << "Hi," << a.getUsername() << "!\nEnter your password > ";
+	system("CLS");
+	std::cout << "[x] to return to menu\nHi," << a.getUsername() 
+		<< "!\nEnter your password:\n";
 	std::string entered_password;
-	std::cin >> entered_password;
-	while (entered_password != a.getPassword())
+	do
 	{
-		std::cout << "! Not correct password !\nEnter [r] to try again\n[x] to return back\n > ";
-		char ch;
-		std::cin >> ch;
-		if (ch == 'x')
+		std::cout << "\n > ";
+		std::cin >> entered_password;
+		if (entered_password == "x")
 		{
 			return false;
 		}
-		else
+		if (entered_password != a.getPassword())
 		{
-			std::cout << "Enter your password > ";
-			std::cin >> entered_password;
+			std::cout << "\n! Not correct password !\n";
 		}
-	}
+	} while (entered_password != a.getPassword());
 	return true;
 }
 
-std::string amilib::Menu::createFileName(std::string from)
+std::string amilib::Library::createFileName(std::string from)
 {
 	for (auto it = from.begin(); it < from.end(); it++)
 	{

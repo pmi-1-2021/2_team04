@@ -166,13 +166,13 @@ void amilib::BooksDataBase::returnBook(int user_id, int book_id)
 
 int amilib::BooksDataBase::createId()
 {
+	//read file backwards untill begining of the last line(id)
 	std::ifstream file(infoFilePath);
-	file.seekg(-1, std::ios_base::end);
+	file.seekg(-3, std::ios_base::end);// skip last /n
+	char ch;
 	bool keepLooping = true;
 	while (keepLooping) {
-		char ch;
 		file.get(ch);                         
-
 		if ((int)file.tellg() <= 1) {       
 			file.seekg(0);                  
 			keepLooping = false;             
@@ -181,7 +181,7 @@ int amilib::BooksDataBase::createId()
 			keepLooping = false;                
 		}
 		else {                                
-			file .seekg(-2, std::ios_base::cur);
+			file.seekg(-2, std::ios_base::cur);
 		}
 	}
 	int lastId;

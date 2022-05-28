@@ -1,78 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\source\book.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\books_database.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\main.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\menu.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\account.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\users_database.cpp">
-      <Filter>cpps</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\booklist.cpp">
-      <Filter>cpps</Filter>
+      <Filter>DataBasesClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\source\bookstaking.cpp">
-      <Filter>cpps</Filter>
+      <Filter>DataBasesClasses</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\idcreator.cpp">
-      <Filter>cpps</Filter>
+    <ClCompile Include="..\source\books_database.cpp">
+      <Filter>DataBasesClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\source\user_transactions.cpp">
-      <Filter>cpps</Filter>
+      <Filter>GlobalTransactions</Filter>
     </ClCompile>
     <ClCompile Include="..\source\book_transactions.cpp">
-      <Filter>cpps</Filter>
+      <Filter>GlobalTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\global_transactions.cpp">
+      <Filter>GlobalTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\book.cpp">
+      <Filter>LogicEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\account.cpp">
+      <Filter>LogicEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\main.cpp">
+      <Filter>LibraryStart%28Main%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\booklist.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\menu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\book_menu.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\book.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\database.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\menu.h">
-      <Filter>headers</Filter>
+      <Filter>LogicEntities</Filter>
     </ClInclude>
     <ClInclude Include="..\source\account.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\booklist.h">
-      <Filter>headers</Filter>
+      <Filter>LogicEntities</Filter>
     </ClInclude>
     <ClInclude Include="..\source\bookstaking.h">
-      <Filter>headers</Filter>
+      <Filter>DataBasesClasses</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\idcreator.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\book_transactions.h">
-      <Filter>headers</Filter>
+    <ClInclude Include="..\source\database.h">
+      <Filter>DataBasesClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\source\user_transactions.h">
-      <Filter>headers</Filter>
+      <Filter>GlobalTransactions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\global_transactions.h">
+      <Filter>GlobalTransactions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\book_transactions.h">
+      <Filter>GlobalTransactions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\menu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\booklist.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\book_menu.h">
+      <Filter>Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="headers">
-      <UniqueIdentifier>{2d720a3a-3082-4cd7-883d-032af53f281f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="txts">
       <UniqueIdentifier>{9b0a3a77-dbb1-4a79-a7f9-f67f7e1d85c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cpps">
-      <UniqueIdentifier>{e5d1bb8e-672c-4991-84a1-e4866b3aade7}</UniqueIdentifier>
+    <Filter Include="DataBasesClasses">
+      <UniqueIdentifier>{b46750ee-1acd-4a0c-b207-e1fdcaa2a72d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GlobalTransactions">
+      <UniqueIdentifier>{6da406ff-4a8f-437a-b77e-1b12a8956a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus">
+      <UniqueIdentifier>{dbda58b2-00d8-48d0-9b36-12d8dd357bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LibraryStart%28Main%29">
+      <UniqueIdentifier>{5d4aa246-2fb5-4342-8949-b7ffaafcf2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LogicEntities">
+      <UniqueIdentifier>{2d720a3a-3082-4cd7-883d-032af53f281f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

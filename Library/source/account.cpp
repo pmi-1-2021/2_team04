@@ -68,21 +68,21 @@ namespace amilib
     }
     void Account::returnBook(int id)
     {
-        auto it = this->acc_books.begin();
-        for (it; it != this->acc_books.end(); it++)
+        for (auto& pair : this->acc_books)
         {
-            if (it->first == id)
+            //if book was not returned yet, mark returned as true
+            if (pair.first == id && pair.second == false)
             {
-                break;
+                pair.second = true;
             }
         }
-        it->second = true;
     }
     bool Account::hasABook(int book_id) const
     {
         bool has = false;
         for (auto &pair : this->acc_books)
         {
+            //if book was not returned yet, mark has as true
             if (book_id == pair.first && pair.second == false)
             {
                 has = true;

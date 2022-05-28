@@ -1,12 +1,12 @@
 #include "book_transactions.h"
-#include "idcreator.h"
+#include "global_transactions.h"
 #include "book.h"
 
 namespace amilib
 {
 	IdCreator* AddBookTransaction::ids = nullptr;
 
-	AddBookTransaction::AddBookTransaction(int by_id, Book new_book, std::vector<BooksChangesClient*> bccVec)
+	AddBookTransaction::AddBookTransaction(int by_id, Book new_book, std::vector<BooksChangesClient*>&& bccVec)
 		:byId(by_id),
 		newBook(new_book),
 		booksChangesClients(bccVec)
@@ -27,14 +27,14 @@ namespace amilib
 	{
 	}
 
-	Transaction* CreateAddBookTransaction::createBy(int id)
+	GlobalFileTransaction* CreateAddBookTransaction::createBy(int id)
 	{
-		Transaction* t = new AddBookTransaction(id ,toAdd, 
-			CreateTransaction::getBooksChangesClients());
+		GlobalFileTransaction* t = new AddBookTransaction(id ,toAdd, 
+			std::move(CreateTransaction::getBooksChangesClients()));
 		return t;
 	}
 
-	amilib::ChangeBookInfoTransaction::ChangeBookInfoTransaction(int by_id, int book_id, Book changes, std::vector<BooksChangesClient*> bcc_vec)
+	amilib::ChangeBookInfoTransaction::ChangeBookInfoTransaction(int by_id, int book_id, Book changes, std::vector<BooksChangesClient*>&& bcc_vec)
 		:byId(by_id),
 		bookId(book_id),
 		toChange(changes),
@@ -56,14 +56,14 @@ namespace amilib
 	{
 	}
 
-	amilib::Transaction* amilib::CreateChangeBookInfoTransaction::createBy(int id)
+	amilib::GlobalFileTransaction* amilib::CreateChangeBookInfoTransaction::createBy(int id)
 	{
-		Transaction* t = new ChangeBookInfoTransaction(id, bookId, changedBook,
-			CreateTransaction::getBooksChangesClients());
+		GlobalFileTransaction* t = new ChangeBookInfoTransaction(id, bookId, changedBook,
+			std::move(CreateTransaction::getBooksChangesClients()));
 		return t;
 	}
 
-	amilib::TakeBookTransaction::TakeBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*> trc_vec)
+	amilib::TakeBookTransaction::TakeBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>&& trc_vec)
 		:userId(user_id),
 		bookId(book_id),
 		takeReturnClients(trc_vec)
@@ -83,17 +83,17 @@ namespace amilib
 	{
 	}
 
-	Transaction* amilib::CreateTakeBookTransaction::createBy(int id)
+	GlobalFileTransaction* amilib::CreateTakeBookTransaction::createBy(int id)
 	{
-		Transaction* t = new TakeBookTransaction(id, bookId,
-			CreateTransaction::getTakeReturnClients());
+		GlobalFileTransaction* t = new TakeBookTransaction(id, bookId,
+			std::move(CreateTransaction::getTakeReturnClients()));
 		return t;
 	}
 
-	amilib::ReturnBookTransaction::ReturnBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*> trc_vec)
+	amilib::ReturnBookTransaction::ReturnBookTransaction(int user_id, int book_id, std::vector<TakeReturnClient*>&& trc_vec)
 		:userId(user_id),
 		bookId(book_id),
-		takeReturnClients(trc_vec)
+		takeReturnClients(std::move(trc_vec))
 	{
 	}
 
@@ -110,10 +110,10 @@ namespace amilib
 	{
 	}
 
-	Transaction* amilib::CreateReturnBookTransaction::createBy(int id)
+	GlobalFileTransaction* amilib::CreateReturnBookTransaction::createBy(int id)
 	{
-		Transaction* t = new ReturnBookTransaction(id, bookId,
-			CreateTransaction::getTakeReturnClients());
+		GlobalFileTransaction* t = new ReturnBookTransaction(id, bookId, 
+			std::move(CreateTransaction::getTakeReturnClients()));
 		return t;
 	}
 

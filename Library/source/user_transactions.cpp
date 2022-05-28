@@ -1,5 +1,5 @@
 #include "user_transactions.h"
-#include "idcreator.h"
+#include "global_transactions.h"
 
 namespace amilib
 {
@@ -33,18 +33,23 @@ namespace amilib
 	}
 	void ChangeUserInfoTransaction::execute()
 	{
+		throw std::string("File transaction not implemented");
 	}
-	Transaction* CreateAddUserTransaction::createBy(int id)
+	GlobalFileTransaction* CreateAddUserTransaction::createBy(int id)
 	{
-		Transaction* t = new AddUserTransaction(id, newAcc,
+		GlobalFileTransaction* t = new AddUserTransaction(id, newAcc,
 			CreateTransaction::getUsersChangesClients());
 		return t;
 	}
 	CreateChangeUserInfoTransaction::CreateChangeUserInfoTransaction(int id, Account existing_acc)
+		:UserId(id),
+		toChange(existing_acc)
 	{
+		throw std::string("File transaction not implemented");
 	}
-	Transaction* CreateChangeUserInfoTransaction::createBy(int id)
+	GlobalFileTransaction* CreateChangeUserInfoTransaction::createBy(int id)
 	{
+		throw std::string("File transaction not implemented");
 		return nullptr;
 	}
 }

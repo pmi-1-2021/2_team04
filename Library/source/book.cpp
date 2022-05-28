@@ -58,6 +58,21 @@ void amilib::Book::setAmmount(size_t new_ammount)
 	ammount = new_ammount;
 }
 
+void amilib::Book::setTitle(std::string new_title)
+{
+	title = new_title;
+}
+
+void amilib::Book::setAuthor(std::string new_author)
+{
+	author = new_author;
+}
+
+void amilib::Book::setSize(size_t new_size)
+{
+	size = new_size;
+}
+
 void amilib::Book::setId(int new_id)
 {
 	this->id = new_id;

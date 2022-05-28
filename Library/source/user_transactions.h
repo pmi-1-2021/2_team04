@@ -2,12 +2,12 @@
 #ifndef USER_TRANSACTIONS_H
 #define USER_TRANSACTIONS_H
 
-#include "idcreator.h"
+#include "global_transactions.h"
 
 
 namespace amilib
 {
-	class AddUserTransaction : public Transaction
+	class AddUserTransaction : public GlobalFileTransaction
 	{
 	public:
 		AddUserTransaction(int by_id, Account new_acc, std::vector<UsersChangesClient*>);
@@ -25,12 +25,12 @@ namespace amilib
 	{
 	public:
 		CreateAddUserTransaction(Account new_acc);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		Account newAcc;
 	};
 
-	class ChangeUserInfoTransaction : public Transaction
+	class ChangeUserInfoTransaction : public GlobalFileTransaction
 	{
 	public:
 		ChangeUserInfoTransaction(int by_id, int user_id, Account existing_acc, std::vector<UsersChangesClient*>);
@@ -46,7 +46,7 @@ namespace amilib
 	{
 	public:
 		CreateChangeUserInfoTransaction(int id, Account existing_acc);
-		virtual Transaction* createBy(int id);
+		virtual GlobalFileTransaction* createBy(int id);
 	private:
 		int UserId;
 		Account toChange;

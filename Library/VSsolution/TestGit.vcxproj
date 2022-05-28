@@ -147,8 +147,9 @@
     <ClInclude Include="..\source\book.h" />
     <ClInclude Include="..\source\booklist.h" />
     <ClInclude Include="..\source\bookstaking.h" />
+    <ClInclude Include="..\source\book_menu.h" />
     <ClInclude Include="..\source\book_transactions.h" />
-    <ClInclude Include="..\source\idcreator.h" />
+    <ClInclude Include="..\source\global_transactions.h" />
     <ClInclude Include="..\source\database.h" />
     <ClInclude Include="..\source\menu.h" />
     <ClInclude Include="..\source\account.h" />
@@ -159,8 +160,9 @@
     <ClCompile Include="..\source\booklist.cpp" />
     <ClCompile Include="..\source\books_database.cpp" />
     <ClCompile Include="..\source\bookstaking.cpp" />
+    <ClCompile Include="..\source\book_menu.cpp" />
     <ClCompile Include="..\source\book_transactions.cpp" />
-    <ClCompile Include="..\source\idcreator.cpp" />
+    <ClCompile Include="..\source\global_transactions.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\menu.cpp" />
     <ClCompile Include="..\source\account.cpp" />

@@ -15,13 +15,12 @@
 
 namespace amilib 
 {
-	class Menu : virtual public BooksChangesClient, virtual public TakeReturnClient
+	class Library : virtual public BooksChangesClient, virtual public TakeReturnClient
 	{
 	public:
-		Menu(BooksDataBase books_data_base, UsersDataBase users_data_base);
-		virtual ~Menu();
-		void callMain();
-		void loadAccInfo();
+		Library(BooksDataBase books_data_base, UsersDataBase users_data_base);
+		virtual ~Library();
+		void callMenu();
 		void clearInfo();
 		virtual void changeBookAmmount(int book_id, size_t new_ammount);
 		virtual void changeBookInfo(int book_id, Book new_info);
@@ -29,30 +28,34 @@ namespace amilib
 		virtual void returnBook(int user_id, int book_id);
 		virtual void addNewBook(Book b);
 	private:
-		bool logIn();
+		Account account;
+		BooksDataBase booksDB;
+		UsersDataBase usersDB;
+		std::unordered_map<int, amilib::Account> usersMap;
+		std::unordered_map<int, amilib::Book> booksMap;
+		bool logInForm();
+		bool askPassword(Account& a);
+		void loadAccInfo();
 		void logOut();
-		void signUp();
-		void noaccMain();
-		void userMain();
-		void adminMain();
+		void signUpForm();
+		void noaccMenu();
+		void userMenu();
+		void adminMenu();
 		void libBookList();
 		void userBookList();
 		void bookList(std::vector<Book>&);
 		void selectBook(Book& book_to_select);
-		void drawHeader();
-		void bookSearch();
-		void takeBook(int id);
-		void returnBook(int id);
-		void addNewBook();
-		bool uniqueNewUsername(std::string name);
-		int idAtUsername(std::string name);
-		bool askPassword(Account& a);
+		void transactionTakeBook(int id);
+		void transactionReturnBook(int id);
+		void newBookForm();
+		void editBookForm(Book b);
+		int idAtUsernameInMap(std::string name);
 		std::string createFileName(std::string from);
-		Account account;
-		BooksDataBase booksInfo;
-		UsersDataBase usersInfo;
-		std::unordered_map<int, amilib::Account> usersMap;
-		std::unordered_map<int, amilib::Book> booksMap;
+		void drawHeader();
+		//todo:
+		void bookSearch();
+		//to clear up
+		//bool uniqueNewUsername(std::string name);
 	};
 }
 #endif // !MENU_H
