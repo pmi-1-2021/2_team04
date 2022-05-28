@@ -1,11 +1,13 @@
-#include"account.h"
+#include "account.h"
 
+
+#include<iostream>
 
 
 namespace amilib
 {
-    Account::Account(int _id, std::string _role, std::string _username, std::string _password)
-        : id(_id),
+    Account::Account(std::string _role, std::string _username, std::string _password)
+        : id(0),
         role(_role),
         username(_username),
         password(_password)
@@ -23,19 +25,19 @@ namespace amilib
     {
         acc_books.resize(0);
     }
-    int Account::getId()
+    int Account::getId() const
     {
         return id;
     }
-    std::string Account::getRole()
+    std::string Account::getRole() const
     {
         return role;
     }
-    std::string Account::getUsername()
+    std::string Account::getUsername() const
     {
         return username;
     }
-    std::string Account::getPassword()
+    std::string Account::getPassword() const
     {
         return password;
     }
@@ -60,32 +62,42 @@ namespace amilib
         password = _password;
     }
 
-    void Account::addBook(int id)
+    void Account::addBook(int id, bool returned)
     {
-        this->acc_books.push_back(id);
+        this->acc_books.emplace_back(id, returned);
     }
-    void Account::removeBook(int id)
+    void Account::returnBook(int id)
     {
-        auto it = this->acc_books.begin();
-        for (it; it != this->acc_books.end(); it++)
+        for (auto& pair : this->acc_books)
         {
-            if (*it == id)
+            //if book was not returned yet, mark returned as true
+            if (pair.first == id && pair.second == false)
             {
-                break;
+                pair.second = true;
             }
         }
-        this->acc_books.erase(it);
     }
-    bool Account::hasABook(int book_id)
+    bool Account::hasABook(int book_id) const
     {
         bool has = false;
-        for (int id : this->acc_books)
+        for (auto &pair : this->acc_books)
         {
-            if (book_id == id)
+            //if book was not returned yet, mark has as true
+            if (book_id == pair.first && pair.second == false)
             {
                 has = true;
             }
         }
         return has;
+    }
+    std::istream& operator>>(std::istream& in, Account& a)
+    {
+        in >> a.id >> a.role >> a.username >> a.password;
+        return in;
+    }
+    std::ostream& operator<<(std::ostream& out, Account& a)
+    {
+        out << a.id << a.role << a.username << a.password;
+        return out;
     }
 }

@@ -140,22 +140,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="..\BusinessData\booksInfo.txt" />
-    <Text Include="..\BusinessData\transactions.txt" />
+    <Text Include="..\BusinessData\takings.txt" />
     <Text Include="..\BusinessData\users.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\book.h" />
-    <ClInclude Include="..\source\infoLoaders.h" />
+    <ClInclude Include="..\source\booklist.h" />
+    <ClInclude Include="..\source\bookstaking.h" />
+    <ClInclude Include="..\source\book_menu.h" />
+    <ClInclude Include="..\source\book_transactions.h" />
+    <ClInclude Include="..\source\global_transactions.h" />
+    <ClInclude Include="..\source\database.h" />
     <ClInclude Include="..\source\menu.h" />
     <ClInclude Include="..\source\account.h" />
+    <ClInclude Include="..\source\user_transactions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\book.cpp" />
-    <ClCompile Include="..\source\booksloader.cpp" />
+    <ClCompile Include="..\source\booklist.cpp" />
+    <ClCompile Include="..\source\books_database.cpp" />
+    <ClCompile Include="..\source\bookstaking.cpp" />
+    <ClCompile Include="..\source\book_menu.cpp" />
+    <ClCompile Include="..\source\book_transactions.cpp" />
+    <ClCompile Include="..\source\global_transactions.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\menu.cpp" />
     <ClCompile Include="..\source\account.cpp" />
-    <ClCompile Include="..\source\usersloader.cpp" />
+    <ClCompile Include="..\source\users_database.cpp" />
+    <ClCompile Include="..\source\user_transactions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

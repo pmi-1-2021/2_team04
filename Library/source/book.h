@@ -1,22 +1,16 @@
 #pragma once
+#ifndef BOOK_H
+#define BOOK_H
 
 #include <string>
-
-
 
 namespace amilib
 {
 	class Book
 	{
-	private:
-		int id;
-		size_t ammount;
-		std::string title;
-		std::string author;
-		size_t size;
-		std::string fileName;
 	public:
-		Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
+		Book();
+		Book(size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName);
 		int getId();
 		size_t getAmmount();
 		size_t getSize();
@@ -24,6 +18,21 @@ namespace amilib
 		std::string getAuthor();
 		std::string getFileName();
 		void setAmmount(size_t new_ammount);
+		void setTitle(std::string new_title);
+		void setAuthor(std::string new_author);
+		void setSize(size_t new_size);
+		friend std::istream& operator>>(std::istream& in, Book& b);
+		friend std::ostream& operator<<(std::ostream& out, Book& b);
+	private:
+		int id;
+		size_t ammount;
+		std::string title;
+		std::string author;
+		size_t size;
+		std::string fileName;
+		void setId(int id);
+		friend class AddBookTransaction;
+		friend class BooksDataBase;
 	};
 
 
@@ -73,3 +82,5 @@ namespace amilib
 
 
 }
+
+#endif // !BOOK_H

@@ -1,10 +1,20 @@
 #include "book.h"
 
+#include<iostream>
 
 
+amilib::Book::Book()
+	: id(0),
+	ammount(0),
+	title(""),
+	author(""),
+	size(0),
+	fileName("")
+{
+}
 
-amilib::Book::Book(int _id, size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName)
-	: id(_id),
+amilib::Book::Book(size_t _ammount, std::string _title, std::string _author, size_t _size, std::string _fileName)
+	: id(0),
 	ammount(_ammount),
 	title(_title),
 	author(_author),
@@ -46,4 +56,46 @@ std::string amilib::Book::getFileName()
 void amilib::Book::setAmmount(size_t new_ammount)
 {
 	ammount = new_ammount;
+}
+
+void amilib::Book::setTitle(std::string new_title)
+{
+	title = new_title;
+}
+
+void amilib::Book::setAuthor(std::string new_author)
+{
+	author = new_author;
+}
+
+void amilib::Book::setSize(size_t new_size)
+{
+	size = new_size;
+}
+
+void amilib::Book::setId(int new_id)
+{
+	this->id = new_id;
+}
+
+std::istream& amilib::operator>>(std::istream& in, Book& b)
+{
+	in >> b.id >>
+	b.ammount >>
+	b.title >>
+	b.author >>
+	b.size >>
+	b.fileName;
+	return in;
+}
+
+std::ostream& amilib::operator<<(std::ostream& out, Book& b)
+{
+	out << b.id <<
+		b.ammount <<
+		b.title <<
+		b.author <<
+		b.size <<
+		b.fileName;
+	return out;
 }
