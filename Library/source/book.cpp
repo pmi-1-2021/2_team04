@@ -88,14 +88,3 @@ std::istream& amilib::operator>>(std::istream& in, Book& b)
 	b.fileName;
 	return in;
 }
-
-std::ostream& amilib::operator<<(std::ostream& out, Book& b)
-{
-	out << b.id <<
-		b.ammount <<
-		b.title <<
-		b.author <<
-		b.size <<
-		b.fileName;
-	return out;
-}

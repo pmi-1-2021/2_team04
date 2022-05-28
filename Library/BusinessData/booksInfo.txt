@@ -1,7 +1,6 @@
 1 0009 title1 author1 100 book1.txt
 2 0009 title2 author2 120 book2.txt
-3 0008 newbook adminsemsem 343 newbookadminsemsem
-4 0011 newtitle semsem 121 newtitlesemsem
+3 0008 newbookadmin semsem 343 newbookadminsemsem
+4 0011 TITTTTLEEEE lesemsem 121 newtitlesemsem
 5 0099 AddedBook Transactions 999 AddedBookTransactions
-6 0100 title3 semsemsem 111 title3semsemsem
-7 0049 book4 a4 435 book4a4
+6 0101 title3 editedauthor 111 title3semsemsem

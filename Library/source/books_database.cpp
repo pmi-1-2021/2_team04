@@ -93,16 +93,22 @@ void amilib::BooksDataBase::changeBookInfo(int book_id, Book new_info)
 	{
 		Book b;
 		file >> b;
-		books[b.getId()] = b;
+		if (b.getId() != 0)
+		{
+			books[b.getId()] = b;
+		}
 	}
 	file.close();
 	books.at(book_id) = new_info;
 	std::ofstream overwtire;
 	overwtire.open(infoFilePath);
-	for (std::map<int, Book>::iterator it = books.begin();
-		it != books.end(); it++)
+	for (auto& pair : books)
 	{
-		overwtire << it->second << "\n";
+		overwtire << pair.second.getId() << ' ' 
+			<< getAmmountOffset(pair.second.getAmmount())
+			<< pair.second.getAmmount() << ' '
+			<< pair.second.getTitle() << ' ' << pair.second.getAuthor() << ' '
+			<< pair.second.getSize() << ' ' << pair.second.getFileName() << "\n";
 	}
 	overwtire.close();
 }

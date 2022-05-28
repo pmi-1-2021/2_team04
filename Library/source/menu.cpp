@@ -150,7 +150,7 @@ bool amilib::Library::logInForm()
 		int id = idAtUsernameInMap(entered_username);
 		if (id == 0)
 		{
-			std::cout << "\Account with this username does not exist!\n";
+			std::cout << "Account with this username does not exist!\n";
 		}
 		else
 		{
@@ -294,7 +294,7 @@ void amilib::Library::adminMenu()
 		system("CLS");
 		drawHeader();
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
-		std::cout << "[l] library book list\n[m] my list\n[o] log out\n[c] close program\n";
+		std::cout << "[l] library book list\n[m] my list\n[a] add new admin\n[b] add new book\n[o] log out\n[c] close program\n";
 		std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
 		std::cout << "\n > ";
 		std::cin >> ch;
@@ -328,7 +328,7 @@ void amilib::Library::libBookList()
 	for (std::unordered_map<int, Book>::iterator it = booksMap.begin(); 
 		it != booksMap.end(); it++)
 	{
-		if (it->second.getId() == 0) //if default book
+		if (it->second.getAmmount() != 0)
 		{
 			available_books.push_back(it->second);
 		}
@@ -407,25 +407,11 @@ void amilib::Library::drawHeader()
 {
 	std::cout << "Amilib by AMi-11" << std::endl;
 	std::cout << "==================================================================================\n";
-	std::cout << this->account.getLogin() << "\n";
+	std::cout << this->account.getUsername() << "\n";
 	std::cout << "==================================================================================\n\n";
 }
 
 void amilib::Library::bookSearch()
-{
-	//todo
-	std::cout << "\nnot implemented\n";
-	system("pause");
-}
-
-void amilib::Menu::updateUsers()
-{
-	//todo
-	std::cout << "\nnot implemented\n";
-	system("pause");
-}
-
-void amilib::Menu::updateBooks()
 {
 	//todo
 	std::cout << "\nnot implemented\n";
