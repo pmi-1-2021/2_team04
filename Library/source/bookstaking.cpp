@@ -55,6 +55,7 @@ void amilib::BooksTakingBase::returnBook(int this_user_id, int this_book_id)
 
 void amilib::BooksTakingBase::fillAccount(Account& a)
 {
+	a.acc_books.clear();
 	std::fstream file(filePath, std::ios::out | std::ios::in);
 	while (!file.eof())
 	{
@@ -94,6 +95,7 @@ void amilib::BooksTakingBase::fillAllAccounts(std::unordered_map<int, amilib::Ac
 		}
 		try
 		{
+			users_map.at(userId).acc_books.clear();
 			users_map.at(userId).addBook(bookId, isReturned);
 		}
 		catch (const std::exception&)

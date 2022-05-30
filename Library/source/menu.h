@@ -51,6 +51,10 @@ namespace amilib
 		void editBookForm(Book b);
 		int idAtUsernameInMap(std::string name);
 		std::string createFileName(std::string from);
+		virtual void inputBook(Book b);
+		virtual void readBook(Book b);
+		virtual size_t getLines(Book b);
+		virtual void editBook(Book b);
 		void drawHeader();
 		//todo:
 		void bookSearch();

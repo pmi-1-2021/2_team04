@@ -33,7 +33,10 @@ bool amilib::BookList::askId(int& id)
 	std::string user_input;
 	do
 	{
+		
+		std::cin.clear();
 		std::cin >> user_input;
+		std::cin.clear();
 		if (user_input == "x")
 		{
 			return false;

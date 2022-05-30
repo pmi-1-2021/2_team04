@@ -6,6 +6,8 @@
 #include "book_transactions.h"
 #include "user_transactions.h"
 #include "book_menu.h"
+#include "database.h"
+#include "book.h"
 
 #include <iostream>
 #include <fstream>
@@ -377,7 +379,7 @@ void amilib::Library::selectBook(Book& book_to_select)
 		if (ch == 'r')
 		{
 			//todo
-			std::cout << "\nnot implemented\n";
+			readBook(book_to_select);
 			system("pause");
 		}
 		else if (ch == 'b')
@@ -399,6 +401,14 @@ void amilib::Library::selectBook(Book& book_to_select)
 		else if (ch == 'e')
 		{
 			editBookForm(book_to_select);
+		}
+		else if (ch == 'a')
+		{
+			editBook(book_to_select);
+		}
+		else if (ch == 'i')
+		{
+			inputBook(book_to_select);
 		}
 	} while (!bm.exitKey());
 }
@@ -480,6 +490,7 @@ void amilib::Library::newBookForm()
 	CreateTransaction* factory = new CreateAddBookTransaction(b);
 	GlobalFileTransaction* addBook = factory->createBy(this->account.getId());
 	addBook->execute();
+	inputBook(b);
 	std::cout << "New book was successfully added!\nPress enter to go back\n > ";
 	std::cin.ignore();
 	std::cin.ignore();
@@ -580,6 +591,7 @@ bool amilib::Library::askPassword(Account& a)
 
 std::string amilib::Library::createFileName(std::string from)
 {
+	std::string str("..\\BusinessData\\Books\\");
 	for (auto it = from.begin(); it < from.end(); it++)
 	{
 		if (*it == ' ')
@@ -587,5 +599,116 @@ std::string amilib::Library::createFileName(std::string from)
 			from.erase(it);
 		}
 	}
-	return from;
+	return str+from+".txt";
+}
+void amilib::Library::inputBook(Book b)
+{
+	//here we enter the book with ENTER pressing ignore
+	//and while we are entering text without entering an "f" letter that means we want to "f"inish proccess
+	//we write every line to vector
+	std::vector<std::string> lines;
+	std::cin >> std::noskipws;
+	std::string line;
+	std::cout << "Enter book's text! When you finish, enter [f]!\n";
+	while (getline(std::cin, line) && line != "f")
+	{
+		lines.push_back(line);
+	}
+
+	//then we open needed file and input every line from vector to file
+	std::ofstream file(b.getFileName(), std::ofstream::out | std::ofstream::trunc);
+	std::vector<std::string>::iterator itr;
+	if (file.is_open())
+	{
+		for (itr = lines.begin(); itr != lines.end(); itr++)
+		{
+			file << *itr << std::endl;
+		}
+
+		file.close();
+
+		//free memory 
+		lines.clear();
+		lines.shrink_to_fit();
+		std::cout << "New book was successfully added!\nPlease, reload the program!\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+void amilib::Library::readBook(Book b)
+{
+	std::ifstream file(b.getFileName());
+	std::string line;
+	std::vector<std::string> lines;
+	if (file.is_open())
+	{
+		//writing lines from a file to vector
+		//every line is vector's element
+		for (size_t i = 0; i < getLines(b); i++)
+		{
+			getline(file, line);
+			lines.push_back(line);
+		}
+		file.close();
+		//book output
+		std::cout << "[Name of book]: " << b.getTitle() << "\n";
+		for (size_t i = 0; i < getLines(b); i++)
+		{
+			std::cout << "[" << (i + 1) << "] " << lines.at(i) << std::endl;
+		}
+		//free memory
+		lines.clear();
+		lines.shrink_to_fit();
+	}
+}
+
+size_t amilib::Library::getLines(Book b)
+{
+	std::string line;
+	std::ifstream file(b.getFileName());
+	size_t count = 0;
+	if (file.is_open())
+	{
+		while (file.peek() != EOF)
+		{
+			getline(file, line);
+			count++;
+		}
+		file.close();
+		return count;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+void amilib::Library::editBook(Book b)
+{
+	std::vector<std::string> lines;
+	std::cin >> std::noskipws;
+	std::string line;
+	std::cout << "Enter book's text! When you finish, enter [f]!\n";
+	while (getline(std::cin, line) && line != "f")
+	{
+		lines.push_back(line);
+	}
+
+	std::ofstream file(b.getFileName(), std::ofstream::out | std::ofstream::app);
+	std::vector<std::string>::iterator itr;
+	if (file.is_open())
+	{
+		for (itr = lines.begin(); itr != lines.end(); itr++)
+		{
+			file << *itr << std::endl;
+		}
+
+		file.close();
+
+		//free memory 
+		lines.clear();
+		lines.shrink_to_fit();
+		std::cout << "Book was successfully edited!\nPlease, reload the program!\n";
+		exit(EXIT_FAILURE);
+	}
 }

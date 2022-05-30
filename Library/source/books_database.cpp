@@ -1,5 +1,9 @@
 #include "database.h"
 
+#include <sstream>
+#include <vector>
+#include <Windows.h>
+#include <iostream>
 #include <fstream>
 #include <map>
 

@@ -36,6 +36,10 @@ char amilib::BookMenu::getAction()
 		{
 			return 'e';
 		}
+		else if (this->userRole == "admin" && ch == 'a')
+		{
+			return 'a';
+		}
 	}
 	while (ch != 'x');
 	exit = true;
@@ -68,7 +72,7 @@ void amilib::BookMenu::drawContolPanel()
 	}
 	if (this->userRole == "admin")
 	{
-		std::cout << "[e] edit book info\n";
+		std::cout << "[e] edit book info\n[a] add book's text\n";
 	}
 	std::cout << "[x] return back\n";
 	std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
